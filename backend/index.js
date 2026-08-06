@@ -131,20 +131,17 @@ app.post('/api/bookings', async (req, res) => {
     const validatedData = bookingSchema.parse(req.body);
     const { name, phone, email, area, address, service, date, time } = validatedData;
 
-    const { data, error } = await supabaseAdmin
+    const { error } = await supabaseAdmin
       .from('bookings')
       .insert([
         { name, phone, email, area, address, service, booking_date: date, booking_time: time, status: 'Pending' }
-      ])
-      .select();
+      ]);
 
     if (error) throw error;
 
-    const createdBooking = data[0];
+    const createdBooking = { name, phone, email, area, address, service, booking_date: date, booking_time: time };
     // Send automated email via Brevo
-    if (createdBooking) {
-      sendBookingConfirmationEmail(createdBooking).catch(err => console.error('Brevo email trigger error:', err));
-    }
+    sendBookingConfirmationEmail(createdBooking).catch(err => console.error('Brevo email trigger error:', err));
     
     res.status(201).json({ message: 'Booking created successfully', booking: createdBooking });
   } catch (error) {
