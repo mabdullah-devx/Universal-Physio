@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HeartPulse, CheckCircle2, Star, ArrowRight, UserCheck, CalendarCheck, Home as HomeIcon, ChevronDown } from 'lucide-react';
+import { HeartPulse, CheckCircle2, Star, ArrowRight, UserCheck, CalendarCheck, Home as HomeIcon, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const faqs = [
@@ -16,8 +16,29 @@ const faqs = [
   { q: 'What is your cancellation policy?', a: 'We request at least 6-8 hours notice for cancellations or rescheduling. This allows us to offer the slot to another patient in need.' },
 ];
 
-const Home = () => {
-  const [openFaq, setOpenFaq] = useState(null);
+  const [serviceIndex, setServiceIndex] = useState(0);
+
+  const servicesList = [
+    { title: 'Back & Neck Pain', desc: 'Relief from chronic pain and stiffness through targeted therapy.', img: '/back-neck-pain.jpg' },
+    { title: 'Musculoskeletal', desc: 'Expert care for muscle, bone, and joint conditions to restore function.', img: '/musculoskeletal.png' },
+    { title: 'Stroke Rehabilitation', desc: 'Specialized neuro-physiotherapy to regain mobility & independence.', img: '/stroke-rehab.jpg' },
+    { title: 'Post-Surgery Rehab', desc: 'Regain mobility and strength faster with guided rehabilitation.', img: '/post-surgery-rehab.webp' },
+    { title: 'Elderly Care', desc: 'Improve balance, prevent falls, and maintain independence.', img: '/elderly-care.jpeg' }
+  ];
+
+  const nextService = () => {
+    setServiceIndex((prev) => (prev + 1) % servicesList.length);
+  };
+
+  const prevService = () => {
+    setServiceIndex((prev) => (prev - 1 + servicesList.length) % servicesList.length);
+  };
+
+  const visibleServices = [
+    servicesList[serviceIndex % servicesList.length],
+    servicesList[(serviceIndex + 1) % servicesList.length],
+    servicesList[(serviceIndex + 2) % servicesList.length]
+  ];
 
   return (
     <div className="w-full">
@@ -99,46 +120,73 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Services Overview */}
+      {/* Services Overview Carousel */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4">Specialized treatments</h2>
-          <p className="text-muted-foreground">Tailored care for your specific needs</p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-3">Specialized treatments</h2>
+            <p className="text-muted-foreground text-lg">Tailored care for your specific recovery needs</p>
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={prevService}
+              aria-label="Previous Services"
+              className="w-12 h-12 rounded-full border border-[#E5EADF] bg-white text-[#2C3E2D] flex items-center justify-center hover:bg-[#5C6F52] hover:text-white transition-all shadow-sm active:scale-95"
+            >
+              <ChevronLeft size={22} />
+            </button>
+            <button
+              onClick={nextService}
+              aria-label="Next Services"
+              className="w-12 h-12 rounded-full border border-[#E5EADF] bg-white text-[#2C3E2D] flex items-center justify-center hover:bg-[#5C6F52] hover:text-white transition-all shadow-sm active:scale-95"
+            >
+              <ChevronRight size={22} />
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-          {[
-            { title: 'Back & Neck Pain', desc: 'Relief from chronic pain and stiffness through targeted therapy.', img: '/back-neck-pain.jpg' },
-            { title: 'Musculoskeletal', desc: 'Expert care for muscle, bone, and joint conditions to restore function.', img: '/musculoskeletal.png' },
-            { title: 'Stroke Rehabilitation', desc: 'Specialized neuro-physiotherapy to regain mobility & independence.', img: '/stroke-rehab.jpg' },
-            { title: 'Post-Surgery Rehab', desc: 'Regain mobility and strength faster with guided rehabilitation.', img: '/post-surgery-rehab.webp' },
-            { title: 'Elderly Care', desc: 'Improve balance, prevent falls, and maintain independence.', img: '/elderly-care.jpeg' }
-          ].map((service, index) => (
+        {/* 3-Card Responsive Carousel Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {visibleServices.map((service, index) => (
             <div
-              key={index}
-              className={`group organic-card overflow-hidden ${index % 2 === 1 ? 'md:-translate-y-2' : ''}`}
-              style={{ animationDelay: `${index * 150}ms` }}
+              key={`${service.title}-${index}`}
+              className="group organic-card overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
             >
               {/* Image Container */}
-              <div className="relative h-56 overflow-hidden">
+              <div className="relative h-60 overflow-hidden">
                 <img
                   src={service.img}
                   alt={service.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#FEFEFA] via-transparent to-transparent opacity-60"></div>
               </div>
 
               {/* Content */}
               <div className="p-8 pt-6">
                 <h3 className="font-serif font-bold text-2xl mb-3 group-hover:text-primary transition-colors duration-300">{service.title}</h3>
-                <p className="text-muted-foreground mb-6">{service.desc}</p>
+                <p className="text-muted-foreground mb-6 leading-relaxed text-base">{service.desc}</p>
                 <Link to="/services" className="font-bold text-primary flex items-center gap-2 group-hover:gap-3 transition-all duration-300">
                   Learn more <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>
             </div>
+          ))}
+        </div>
+
+        {/* Pagination Dots */}
+        <div className="flex justify-center items-center gap-2.5 mt-10">
+          {servicesList.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setServiceIndex(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+              className={`h-2.5 rounded-full transition-all duration-300 ${
+                serviceIndex === idx ? 'w-8 bg-[#5C6F52]' : 'w-2.5 bg-[#E5EADF] hover:bg-[#8BA17E]'
+              }`}
+            />
           ))}
         </div>
       </section>
