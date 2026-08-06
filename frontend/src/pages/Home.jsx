@@ -25,7 +25,7 @@ const Home = () => {
     { title: 'Musculoskeletal', desc: 'Expert care for muscle, bone, and joint conditions to restore function.', img: '/musculoskeletal.png' },
     { title: 'Stroke Rehabilitation', desc: 'Specialized neuro-physiotherapy to regain mobility & independence.', img: '/stroke-rehab.jpg' },
     { title: 'Post-Surgery Rehab', desc: 'Regain mobility and strength faster with guided rehabilitation.', img: '/post-surgery-rehab.webp' },
-    { title: 'Elderly Care', desc: 'Improve balance, prevent falls, and maintain independence.', img: '/elderly-care.jpeg' }
+    { title: 'Elderly Care', desc: 'Improve balance, prevent falls, and maintain independence.', img: '/elderly-care.webp' }
   ];
 
   const nextService = () => {

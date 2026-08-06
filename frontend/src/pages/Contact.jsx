@@ -89,7 +89,7 @@ const Contact = () => {
 
           <div className="organic-card p-2 overflow-hidden h-72">
             <iframe
-              title="Lahore"
+              title="Google Maps location of Universal Physio Care in Lahore, Pakistan"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d435515.6734181216!2d74.05419842426364!3d31.482935242557997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190483e58107d9%3A0xc23addd56487739b!2sLahore%2C%20Punjab%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
               width="100%"
               height="100%"

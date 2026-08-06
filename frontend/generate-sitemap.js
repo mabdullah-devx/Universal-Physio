@@ -47,17 +47,25 @@ async function generateSitemap() {
     <lastmod>${currentDate}</lastmod>
     <changefreq>${route === '' ? 'daily' : 'weekly'}</changefreq>
     <priority>${route === '' ? '1.0' : '0.8'}</priority>
+    <image:image>
+      <image:loc>https://universalphysio.fit/hero-bg.png</image:loc>
+      <image:title>Universal Physio Care Lahore</image:title>
+    </image:image>
   </url>`),
     ...blogRoutes.map(item => `  <url>
     <loc>https://universalphysio.fit${item.url}</loc>
     <lastmod>${item.lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://universalphysio.fit/hero-bg.png</image:loc>
+      <image:title>Physiotherapy Recovery Guide</image:title>
+    </image:image>
   </url>`)
   ];
 
   const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${xmlUrls.join('\n')}
 </urlset>`;
 

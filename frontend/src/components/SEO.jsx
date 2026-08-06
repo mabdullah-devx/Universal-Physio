@@ -60,6 +60,27 @@ const SEO = ({
     ]
   };
 
+  const isHomePage = canonicalUrl === 'https://universalphysio.fit' || canonicalUrl === 'https://universalphysio.fit/';
+
+  const breadcrumbSchema = !isHomePage ? {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://universalphysio.fit"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": title.replace(/\|.*$/, '').trim(),
+        "item": canonicalUrl
+      }
+    ]
+  } : null;
+
   return (
     <Helmet>
       {/* Standard metadata tags */}
@@ -89,6 +110,11 @@ const SEO = ({
       <script type="application/ld+json">
         {JSON.stringify(medicalSchema)}
       </script>
+      {breadcrumbSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
+      )}
     </Helmet>
   );
 };

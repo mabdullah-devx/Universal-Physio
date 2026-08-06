@@ -14,13 +14,13 @@ const Footer = () => {
             Bringing professional, certified physiotherapy services to the comfort of your home.
           </p>
           <div className="flex gap-4">
-            <a href="#" className="h-10 w-10 rounded-full bg-border flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-colors">
+            <a href="https://universalphysio.fit" aria-label="Visit our Website" className="h-10 w-10 rounded-full bg-border flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-colors">
               <Globe size={20} />
             </a>
-            <a href="#" className="h-10 w-10 rounded-full bg-border flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-colors">
+            <a href="https://universalphysio.fit/contact" aria-label="Share Universal Physio Care" className="h-10 w-10 rounded-full bg-border flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-colors">
               <Share2 size={20} />
             </a>
-            <a href="#" className="h-10 w-10 rounded-full bg-border flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-colors">
+            <a href="https://wa.me/923064954970" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp" className="h-10 w-10 rounded-full bg-border flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-colors">
               <MessageCircle size={20} />
             </a>
           </div>
