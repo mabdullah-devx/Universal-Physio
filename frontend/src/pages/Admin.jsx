@@ -700,7 +700,7 @@ const Admin = () => {
               <div>
                 <h1 className="text-2xl font-bold uppercase tracking-wider">Universal Physio Care</h1>
                 <p className="text-sm font-semibold">Doctor of Physical Therapy Home Care • Lahore</p>
-                <p className="text-xs">UAN / Contact: +92 3064954970 | Email: universalphysio.com@gmail.com</p>
+                <p className="text-xs">UAN / Contact: +92 3064954970 | Email: info@universalphysio.fit</p>
               </div>
               <div className="text-right">
                 <div className="text-xl font-bold uppercase border-2 border-black px-3 py-1 inline-block mb-1">

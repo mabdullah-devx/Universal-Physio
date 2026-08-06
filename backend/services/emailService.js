@@ -15,7 +15,7 @@ async function sendBookingConfirmationEmail(booking) {
     console.error('Brevo Email Warning: BREVO_API_KEY environment variable is not defined.');
     return;
   }
-  const senderEmail = (process.env.SENDER_EMAIL || 'universalphysio.com@gmail.com').trim();
+  const senderEmail = (process.env.SENDER_EMAIL || 'info@universalphysio.fit').trim();
   const senderName = (process.env.SENDER_NAME || 'Universal Physio Care').trim();
 
   const patientName = booking.name || 'Patient';
@@ -57,7 +57,7 @@ async function sendBookingConfirmationEmail(booking) {
       <hr style="border: none; border-top: 1px solid #E5EADF; margin: 24px 0;" />
       <p style="font-size: 12px; color: #8BA17E; text-align: center; margin: 0;">
         Universal Physio Care • Certified Home Visit Services<br />
-        📞 Contact: +92 3064954970 | ✉️ universalphysio.com@gmail.com
+        📞 Contact: +92 3064954970 | ✉️ info@universalphysio.fit
       </p>
     </div>
   `;

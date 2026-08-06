@@ -213,7 +213,7 @@ const PrivacyPolicy = () => {
                 </div>
                 <div>
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Email Us</p>
-                  <p className="text-lg font-bold text-[#2D4A22]">universalphysio.com@gmail.com</p>
+                  <p className="text-lg font-bold text-[#2D4A22]">info@universalphysio.fit</p>
                 </div>
               </div>
             </div>

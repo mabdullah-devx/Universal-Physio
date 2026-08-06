@@ -52,7 +52,7 @@ const Footer = () => {
           <ul className="flex flex-col gap-3">
             <li className="text-muted-foreground">Lahore, Punjab, Pakistan</li>
             <li className="text-muted-foreground">+92 3064954970</li>
-            <li className="text-muted-foreground">universalphysio.com@gmail.com</li>
+            <li className="text-muted-foreground">info@universalphysio.fit</li>
           </ul>
         </div>
       </div>
