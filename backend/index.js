@@ -157,16 +157,26 @@ app.post('/api/bookings', bookingLimiter, async (req, res) => {
     const { name, phone, email, area, address, service, date, time } = validatedData;
     const statusToken = generateStatusToken();
 
-    const { data, error } = await supabaseAdmin
+    let insertResult = await supabaseAdmin
       .from('bookings')
       .insert([
         { name, phone, email, area, address, service, booking_date: date, booking_time: time, status: 'Pending', status_token: statusToken }
       ])
       .select('id, name, phone, email, area, address, service, booking_date, booking_time, status, status_token');
 
-    if (error) throw error;
+    if (insertResult.error) {
+      console.warn('First insert attempt with status_token failed, retrying standard insert:', insertResult.error.message);
+      insertResult = await supabaseAdmin
+        .from('bookings')
+        .insert([
+          { name, phone, email, area, address, service, booking_date: date, booking_time: time, status: 'Pending' }
+        ])
+        .select('id, name, phone, email, area, address, service, booking_date, booking_time, status');
+    }
 
-    const createdBooking = data && data[0] ? data[0] : { name, phone, email, area, address, service, booking_date: date, booking_time: time, status_token: statusToken };
+    if (insertResult.error) throw insertResult.error;
+
+    const createdBooking = insertResult.data && insertResult.data[0] ? insertResult.data[0] : { name, phone, email, area, address, service, booking_date: date, booking_time: time, status_token: statusToken };
     
     // Send automated email via Brevo (must be awaited in Vercel serverless environment)
     try {
