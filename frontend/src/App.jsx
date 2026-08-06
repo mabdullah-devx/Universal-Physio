@@ -23,6 +23,7 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
+const BookingStatus = lazy(() => import('./pages/BookingStatus'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Fallback loader component
@@ -45,6 +46,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/services" element={<Services />} />
               <Route path="/booking" element={<Booking />} />
+              <Route path="/booking-status" element={<BookingStatus />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/about" element={<About />} />

@@ -46,6 +46,14 @@ async function sendBookingConfirmationEmail(booking) {
         <p style="margin: 6px 0; font-size: 14px;"><strong>Location:</strong> ${address} (${area})</p>
       </div>
 
+      ${booking.id && booking.status_token ? `
+      <div style="text-align: center; margin: 24px 0;">
+        <a href="https://universalphysio.fit/booking-status?id=${booking.id}&token=${booking.status_token}" style="background-color: #5C6F52; color: #ffffff; padding: 12px 24px; border-radius: 10px; text-decoration: none; font-weight: bold; display: inline-block; font-size: 14px;">
+          Track Appointment Status Live 🔍
+        </a>
+      </div>
+      ` : ''}
+
       <p style="font-size: 14px; color: #3E4F37; line-height: 1.5;">
         👨‍⚕️ Our certified Doctor of Physical Therapy (DPT) will review your request and contact you shortly via phone or WhatsApp.
       </p>

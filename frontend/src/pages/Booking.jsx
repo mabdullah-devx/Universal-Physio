@@ -119,7 +119,8 @@ const Booking = () => {
         area: sanitizeInput(formData.area),
         address: sanitizeInput(formData.address),
         date: formData.date,
-        time: formData.time
+        time: formData.time,
+        website: formData.website || ''
       };
 
       // 4. Create Booking

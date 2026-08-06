@@ -125,21 +125,41 @@ const bookingSchema = z.object({
   time: z.string().min(1, 'Time is required')
 });
 
+const rateLimit = require('express-rate-limit');
+
+// Rate limiting: max 5 booking attempts per IP per 15-minute window
+const bookingLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many booking requests from this IP. Please try again in 15 minutes.' }
+});
+
 // Create a booking
-app.post('/api/bookings', async (req, res) => {
+app.post('/api/bookings', bookingLimiter, async (req, res) => {
   try {
+    // Honeypot spam check (bots filling out hidden website field are silently trapped)
+    if (req.body.website && String(req.body.website).trim() !== '') {
+      console.log('🤖 Honeypot trapped spam bot submission.');
+      return res.status(201).json({ message: 'Booking created successfully' });
+    }
+
     const validatedData = bookingSchema.parse(req.body);
     const { name, phone, email, area, address, service, date, time } = validatedData;
+    const statusToken = randomUUID();
 
-    const { error } = await supabaseAdmin
+    const { data, error } = await supabaseAdmin
       .from('bookings')
       .insert([
-        { name, phone, email, area, address, service, booking_date: date, booking_time: time, status: 'Pending' }
-      ]);
+        { name, phone, email, area, address, service, booking_date: date, booking_time: time, status: 'Pending', status_token: statusToken }
+      ])
+      .select('id, name, phone, email, area, address, service, booking_date, booking_time, status, status_token');
 
     if (error) throw error;
 
-    const createdBooking = { name, phone, email, area, address, service, booking_date: date, booking_time: time };
+    const createdBooking = data && data[0] ? data[0] : { name, phone, email, area, address, service, booking_date: date, booking_time: time, status_token: statusToken };
+    
     // Send automated email via Brevo (must be awaited in Vercel serverless environment)
     try {
       await sendBookingConfirmationEmail(createdBooking);
@@ -154,6 +174,43 @@ app.post('/api/bookings', async (req, res) => {
     }
     console.error('Error creating booking:', error);
     res.status(500).json({ error: error.message || 'Internal server error' });
+  }
+});
+
+// Secure Token-Protected Booking Status Verification (GET)
+app.get('/api/booking-status', async (req, res) => {
+  try {
+    const { id, token } = req.query;
+    if (!id || !token) {
+      return res.status(400).json({ error: 'Missing booking ID or status token' });
+    }
+
+    const { data, error } = await supabaseAdmin
+      .from('bookings')
+      .select('id, service, booking_date, booking_time, status, status_token, created_at')
+      .eq('id', id)
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({ error: 'Booking record not found' });
+    }
+
+    if (data.status_token !== token) {
+      return res.status(403).json({ error: 'Invalid or unauthorized status token' });
+    }
+
+    // Return strictly minimal non-sensitive status details
+    res.json({
+      id: data.id,
+      status: data.status,
+      service: data.service,
+      booking_date: data.booking_date,
+      booking_time: data.booking_time,
+      created_at: data.created_at
+    });
+  } catch (err) {
+    console.error('Error verifying booking status:', err);
+    res.status(500).json({ error: 'Failed to retrieve booking status' });
   }
 });
 

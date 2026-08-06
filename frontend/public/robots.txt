@@ -1,19 +1,32 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /booking-status
 
-# AI Search Engine Crawlers (AEO)
+# AI Search Engine Crawlers (Generative Engine Optimization)
 User-agent: GPTBot
 Allow: /
+Disallow: /admin
+Disallow: /booking-status
 
-User-agent: PerplexityBot
+User-agent: ChatGPT-User
 Allow: /
+Disallow: /admin
+Disallow: /booking-status
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /admin
+Disallow: /booking-status
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+Disallow: /booking-status
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /admin
+Disallow: /booking-status
 
-# Sitemap location
 Sitemap: https://universalphysio.fit/sitemap.xml
