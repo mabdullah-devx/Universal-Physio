@@ -157,8 +157,6 @@ const Admin = () => {
     });
 
     return () => {
-      // Auto sign-out when leaving the Admin panel so returning always requires password login
-      supabase.auth.signOut();
       subscription.unsubscribe();
     };
   }, []);
