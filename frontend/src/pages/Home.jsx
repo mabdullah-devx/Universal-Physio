@@ -106,16 +106,17 @@ const Home = () => {
           <p className="text-muted-foreground">Tailored care for your specific needs</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {[
             { title: 'Back & Neck Pain', desc: 'Relief from chronic pain and stiffness through targeted therapy.', img: '/back-neck-pain.jpg' },
             { title: 'Musculoskeletal', desc: 'Expert care for muscle, bone, and joint conditions to restore function.', img: '/musculoskeletal.png' },
+            { title: 'Stroke Rehabilitation', desc: 'Specialized neuro-physiotherapy to regain mobility & independence.', img: '/stroke-rehab.jpg' },
             { title: 'Post-Surgery Rehab', desc: 'Regain mobility and strength faster with guided rehabilitation.', img: '/post-surgery-rehab.webp' },
             { title: 'Elderly Care', desc: 'Improve balance, prevent falls, and maintain independence.', img: '/elderly-care.jpeg' }
           ].map((service, index) => (
             <div
               key={index}
-              className={`group organic-card overflow-hidden ${index === 1 ? 'md:-translate-y-4' : ''}`}
+              className={`group organic-card overflow-hidden ${index % 2 === 1 ? 'md:-translate-y-2' : ''}`}
               style={{ animationDelay: `${index * 150}ms` }}
             >
               {/* Image Container */}
