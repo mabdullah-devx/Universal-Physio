@@ -136,6 +136,14 @@ const bookingLimiter = rateLimit({
   message: { error: 'Too many booking requests from this IP. Please try again in 15 minutes.' }
 });
 
+const crypto = require('crypto');
+const generateStatusToken = () => {
+  if (typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return crypto.randomBytes(16).toString('hex');
+};
+
 // Create a booking
 app.post('/api/bookings', bookingLimiter, async (req, res) => {
   try {
@@ -147,7 +155,7 @@ app.post('/api/bookings', bookingLimiter, async (req, res) => {
 
     const validatedData = bookingSchema.parse(req.body);
     const { name, phone, email, area, address, service, date, time } = validatedData;
-    const statusToken = randomUUID();
+    const statusToken = generateStatusToken();
 
     const { data, error } = await supabaseAdmin
       .from('bookings')
