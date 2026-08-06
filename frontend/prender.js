@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import http from 'http';
-import puppeteer from 'puppeteer';
 import { createClient } from '@supabase/supabase-js';
 
 const distDir = './dist';
@@ -43,7 +42,6 @@ const schemaOrgJSON = JSON.stringify({
   }
 });
 
-// Create simple static server for dist
 function startServer() {
   return new Promise((resolve) => {
     const server = http.createServer((req, res) => {
@@ -87,14 +85,14 @@ function startServer() {
 
 async function getRoutesToPrerender() {
   const staticRoutes = [
-    { path: '/', title: 'Universal Physio Care | DPT Home Visit Physiotherapy Lahore' },
-    { path: '/about', title: 'About Us | Universal Physio Care Lahore' },
-    { path: '/contact', title: 'Contact Us | Universal Physio Care Lahore' },
-    { path: '/booking', title: 'Book Appointment | Universal Physio Care' },
-    { path: '/areas-we-cover', title: 'Areas We Cover in Lahore | Universal Physio Care' },
-    { path: '/blog', title: 'Health Blog & Recovery Tips | Universal Physio Care' },
-    { path: '/privacy-policy', title: 'Privacy Policy | Universal Physio Care' },
-    { path: '/terms-of-service', title: 'Terms of Service | Universal Physio Care' }
+    { path: '/', title: 'Universal Physio Care | DPT Home Visit Physiotherapy Lahore', description: 'Certified Doctor of Physical Therapy (DPT) home visit services in Lahore. Expert treatment for spine, joints, stroke rehabilitation & sports injuries.', canonical: 'https://universalphysio.fit/' },
+    { path: '/about', title: 'About Us | Universal Physio Care Lahore', description: 'Learn about our team of certified Doctors of Physical Therapy (DPT) providing home visit rehabilitation services across Lahore.', canonical: 'https://universalphysio.fit/about' },
+    { path: '/contact', title: 'Contact Us | Universal Physio Care Lahore', description: 'Get in touch with Universal Physio Care. Call +92 3064954970 or email info@universalphysio.fit for home physical therapy visits.', canonical: 'https://universalphysio.fit/contact' },
+    { path: '/booking', title: 'Book Appointment | Universal Physio Care', description: 'Schedule your home physical therapy appointment in Lahore. Select your preferred date, time, and specialized treatment.', canonical: 'https://universalphysio.fit/booking' },
+    { path: '/areas-we-cover', title: 'Areas We Cover in Lahore | Universal Physio Care', description: 'DPT home visit physical therapy available in Gulberg, DHA, Model Town, Johar Town, Bahria Town, and across Lahore.', canonical: 'https://universalphysio.fit/areas-we-cover' },
+    { path: '/blog', title: 'Health Blog & Recovery Tips | Universal Physio Care', description: 'Evidence-based physical therapy insights, back pain advice, stroke recovery exercises, and wellness guides from certified DPT specialists.', canonical: 'https://universalphysio.fit/blog' },
+    { path: '/privacy-policy', title: 'Privacy Policy | Universal Physio Care', description: 'Privacy Policy and patient data protection guidelines for Universal Physio Care.', canonical: 'https://universalphysio.fit/privacy-policy' },
+    { path: '/terms-of-service', title: 'Terms of Service | Universal Physio Care', description: 'Terms of Service and treatment agreement guidelines for Universal Physio Care.', canonical: 'https://universalphysio.fit/terms-of-service' }
   ];
 
   try {
@@ -103,7 +101,9 @@ async function getRoutesToPrerender() {
       blogs.forEach(b => {
         staticRoutes.push({
           path: `/blog/${b.slug}`,
-          title: `${b.title} | Universal Physio Care Blog`
+          title: `${b.title} | Universal Physio Care Blog`,
+          description: `Read ${b.title} on Universal Physio Care blog.`,
+          canonical: `https://universalphysio.fit/blog/${b.slug}`
         });
       });
     }
@@ -114,63 +114,126 @@ async function getRoutesToPrerender() {
   return staticRoutes;
 }
 
+function runFallbackPrenderer(routes) {
+  console.log('⚡ Executing Fast HTML Route Generator Fallback for Vercel CI...');
+  const template = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
+
+  routes.forEach(r => {
+    let html = template;
+    html = html.replace(/<title>.*?<\/title>/gi, `<title>${r.title}</title>`);
+
+    const descTag = `<meta name="description" content="${r.description}">`;
+    if (html.includes('<meta name="description"')) {
+      html = html.replace(/<meta name="description"[^>]*>/gi, descTag);
+    } else {
+      html = html.replace('</head>', `  ${descTag}\n</head>`);
+    }
+
+    const canonicalTag = `<link rel="canonical" href="${r.canonical}">`;
+    if (html.includes('<link rel="canonical"')) {
+      html = html.replace(/<link rel="canonical"[^>]*>/gi, canonicalTag);
+    } else {
+      html = html.replace('</head>', `  ${canonicalTag}\n</head>`);
+    }
+
+    const ogTags = `
+  <meta property="og:title" content="${r.title}">
+  <meta property="og:description" content="${r.description}">
+  <meta property="og:url" content="${r.canonical}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Universal Physio Care">
+  <meta property="og:image" content="https://universalphysio.fit/og-image.jpg">
+  <script type="application/ld+json">${schemaOrgJSON}</script>
+`;
+    html = html.replace('</head>', `${ogTags}\n</head>`);
+
+    if (r.path === '/') {
+      fs.writeFileSync(path.join(distDir, 'index.html'), html, 'utf8');
+    } else {
+      const targetFolder = path.join(distDir, r.path.replace(/^\//, ''));
+      if (!fs.existsSync(targetFolder)) {
+        fs.mkdirSync(targetFolder, { recursive: true });
+      }
+      fs.writeFileSync(path.join(targetFolder, 'index.html'), html, 'utf8');
+    }
+  });
+  console.log('✅ Static pre-rendering completed via HTML route generator.');
+}
+
 async function runPrenderer() {
   if (!fs.existsSync(distDir)) {
     console.error('Dist directory does not exist. Run vite build first.');
     process.exit(1);
   }
 
-  const server = await startServer();
   const routes = await getRoutesToPrerender();
 
-  console.log(`Starting Puppeteer pre-rendering for ${routes.length} routes...`);
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
-
-  const page = await browser.newPage();
-
-  for (const r of routes) {
-    const targetUrl = `http://localhost:${PORT}${r.path}`;
-    console.log(`Rendering route: ${r.path} ...`);
-
-    await page.goto(targetUrl, { waitUntil: 'networkidle0', timeout: 30000 });
-    
-    // Ensure React rendered content inside #root
-    try {
-      await page.waitForSelector('#root > *', { timeout: 5000 });
-    } catch (e) {
-      console.warn(`Warning: Timeout waiting for #root child element on ${r.path}`);
-    }
-
-    let renderedHtml = await page.content();
-
-    // Ensure schema.org LD+JSON is present
-    if (!renderedHtml.includes('application/ld+json')) {
-      const schemaScript = `<script type="application/ld+json">${schemaOrgJSON}</script>`;
-      renderedHtml = renderedHtml.replace('</head>', `${schemaScript}\n</head>`);
-    }
-
-    // Write pre-rendered file to disk
-    if (r.path === '/') {
-      const destPath = path.join(distDir, 'index.html');
-      fs.writeFileSync(destPath, renderedHtml, 'utf8');
-      console.log(`✅ Saved pre-rendered HTML -> ${destPath}`);
-    } else {
-      const targetFolder = path.join(distDir, r.path.replace(/^\//, ''));
-      if (!fs.existsSync(targetFolder)) {
-        fs.mkdirSync(targetFolder, { recursive: true });
-      }
-      const destPath = path.join(targetFolder, 'index.html');
-      fs.writeFileSync(destPath, renderedHtml, 'utf8');
-      console.log(`✅ Saved pre-rendered HTML -> ${destPath}`);
-    }
+  // If running in Vercel CI container, use fast route generator to avoid Linux chrome lib dependencies
+  if (process.env.VERCEL) {
+    runFallbackPrenderer(routes);
+    return;
   }
 
-  await browser.close();
-  server.close();
-  console.log('🎉 Full Puppeteer DOM Pre-Rendering complete!');
+  let server;
+  let browser;
+
+  try {
+    const puppeteerModule = await import('puppeteer');
+    const puppeteer = puppeteerModule.default || puppeteerModule;
+
+    server = await startServer();
+    console.log(`Starting Puppeteer pre-rendering for ${routes.length} routes...`);
+
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+
+    const page = await browser.newPage();
+
+    for (const r of routes) {
+      const targetUrl = `http://localhost:${PORT}${r.path}`;
+      console.log(`Rendering route: ${r.path} ...`);
+
+      await page.goto(targetUrl, { waitUntil: 'networkidle0', timeout: 30000 });
+
+      try {
+        await page.waitForSelector('#root > *', { timeout: 5000 });
+      } catch (e) {
+        console.warn(`Warning: Timeout waiting for #root child element on ${r.path}`);
+      }
+
+      let renderedHtml = await page.content();
+
+      if (!renderedHtml.includes('application/ld+json')) {
+        const schemaScript = `<script type="application/ld+json">${schemaOrgJSON}</script>`;
+        renderedHtml = renderedHtml.replace('</head>', `${schemaScript}\n</head>`);
+      }
+
+      if (r.path === '/') {
+        const destPath = path.join(distDir, 'index.html');
+        fs.writeFileSync(destPath, renderedHtml, 'utf8');
+        console.log(`✅ Saved pre-rendered HTML -> ${destPath}`);
+      } else {
+        const targetFolder = path.join(distDir, r.path.replace(/^\//, ''));
+        if (!fs.existsSync(targetFolder)) {
+          fs.mkdirSync(targetFolder, { recursive: true });
+        }
+        const destPath = path.join(targetFolder, 'index.html');
+        fs.writeFileSync(destPath, renderedHtml, 'utf8');
+        console.log(`✅ Saved pre-rendered HTML -> ${destPath}`);
+      }
+    }
+
+    await browser.close();
+    server.close();
+    console.log('🎉 Full Puppeteer DOM Pre-Rendering complete!');
+  } catch (err) {
+    console.warn('Puppeteer launch encountered environment restriction, switching to HTML route generator fallback:', err.message);
+    if (browser) await browser.close().catch(() => {});
+    if (server) server.close();
+    runFallbackPrenderer(routes);
+  }
 }
 
 runPrenderer().catch((err) => {
