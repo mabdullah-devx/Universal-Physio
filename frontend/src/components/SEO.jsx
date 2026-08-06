@@ -3,13 +3,63 @@ import { Helmet } from 'react-helmet-async';
 
 const SEO = ({ 
   title, 
-  description = "Universal Physio Care - Premium in-home physiotherapy sessions in Lahore. Professional, certified Doctor of Physical Therapy (DPT) at your doorstep.", 
+  description = "Universal Physio Care - Premium in-home physical therapy in Lahore. Certified Doctor of Physical Therapy (DPT) for back pain, stroke rehab, sports injuries, and elderly care.", 
   name = "Universal Physio Care", 
   type = "website",
-  url = "https://universalphysio.fit",
+  url,
   image = "https://universalphysio.fit/hero-bg.png",
   noindex = false
 }) => {
+  const canonicalUrl = url || (typeof window !== 'undefined' ? window.location.href.split('?')[0] : 'https://universalphysio.fit');
+
+  const medicalSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalBusiness",
+    "name": name,
+    "description": description,
+    "url": canonicalUrl,
+    "logo": "https://universalphysio.fit/Physiotherapy%20Clinic%20Logo.svg",
+    "image": image,
+    "telephone": "+923064954970",
+    "email": "info@universalphysio.fit",
+    "priceRange": "₨₨",
+    "medicalSpecialty": "Physiotherapy",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Gulberg III",
+      "addressLocality": "Lahore",
+      "addressRegion": "Punjab",
+      "postalCode": "54000",
+      "addressCountry": "PK"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 31.5204,
+      "longitude": 74.3587
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "08:00",
+      "closes": "20:00"
+    },
+    "areaServed": [
+      { "@type": "City", "name": "Lahore" },
+      { "@type": "Place", "name": "DHA Lahore" },
+      { "@type": "Place", "name": "Gulberg Lahore" },
+      { "@type": "Place", "name": "Model Town Lahore" },
+      { "@type": "Place", "name": "Johar Town Lahore" },
+      { "@type": "Place", "name": "Bahria Town Lahore" }
+    ],
+    "availableService": [
+      { "@type": "MedicalProcedure", "name": "Back & Neck Pain Physiotherapy" },
+      { "@type": "MedicalProcedure", "name": "Musculoskeletal Rehabilitation" },
+      { "@type": "MedicalProcedure", "name": "Stroke Rehabilitation" },
+      { "@type": "MedicalProcedure", "name": "Post-Surgery Rehabilitation" },
+      { "@type": "MedicalProcedure", "name": "Elderly Care & Fall Prevention" }
+    ]
+  };
+
   return (
     <Helmet>
       {/* Standard metadata tags */}
@@ -21,8 +71,9 @@ const SEO = ({
       <meta property="og:type" content={type} />
       <meta property="og:title" content={`${title} | ${name}`} />
       <meta property="og:description" content={description} />
-      <meta property="og:url" content={url} />
+      <meta property="og:url" content={canonicalUrl} />
       <meta property="og:image" content={image} />
+      <meta property="og:site_name" content="Universal Physio Care" />
       
       {/* Twitter tags */}
       <meta name="twitter:creator" content={name} />
@@ -32,27 +83,11 @@ const SEO = ({
       <meta name="twitter:image" content={image} />
 
       {/* Canonical Link */}
-      <link rel="canonical" href={url} />
+      <link rel="canonical" href={canonicalUrl} />
 
       {/* JSON-LD Structured Data */}
       <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "MedicalClinic",
-          "name": name,
-          "description": description,
-          "url": url,
-          "logo": "https://universalphysio.fit/Physiotherapy%20Clinic%20Logo.svg",
-          "image": image,
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Lahore",
-            "addressRegion": "Punjab",
-            "addressCountry": "PK"
-          },
-          "priceRange": "₨₨",
-          "telephone": "+923064954970"
-        })}
+        {JSON.stringify(medicalSchema)}
       </script>
     </Helmet>
   );
