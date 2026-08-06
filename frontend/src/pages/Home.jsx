@@ -16,6 +16,8 @@ const faqs = [
   { q: 'What is your cancellation policy?', a: 'We request at least 6-8 hours notice for cancellations or rescheduling. This allows us to offer the slot to another patient in need.' },
 ];
 
+const Home = () => {
+  const [openFaq, setOpenFaq] = useState(null);
   const [serviceIndex, setServiceIndex] = useState(0);
 
   const servicesList = [
