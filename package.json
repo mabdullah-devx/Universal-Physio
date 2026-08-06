@@ -1,0 +1,15 @@
+{
+  "name": "universal-physio-root",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@getbrevo/brevo": "^6.0.2",
+    "@supabase/supabase-js": "^2.105.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "nodemailer": "^9.0.4",
+    "stripe": "^22.1.0",
+    "zod": "^4.4.3"
+  }
+}
