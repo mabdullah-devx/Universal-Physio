@@ -140,8 +140,12 @@ app.post('/api/bookings', async (req, res) => {
     if (error) throw error;
 
     const createdBooking = { name, phone, email, area, address, service, booking_date: date, booking_time: time };
-    // Send automated email via Brevo
-    sendBookingConfirmationEmail(createdBooking).catch(err => console.error('Brevo email trigger error:', err));
+    // Send automated email via Brevo (must be awaited in Vercel serverless environment)
+    try {
+      await sendBookingConfirmationEmail(createdBooking);
+    } catch (err) {
+      console.error('Brevo email trigger error:', err);
+    }
     
     res.status(201).json({ message: 'Booking created successfully', booking: createdBooking });
   } catch (error) {
