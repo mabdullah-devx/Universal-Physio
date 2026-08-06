@@ -11,35 +11,30 @@ const Services = () => {
       id: "back-neck-pain",
       title: "Back & Neck Pain",
       description: "Comprehensive assessment and treatment for acute or chronic spine-related issues. We use manual therapy and targeted exercises to relieve pain and restore function.",
-      price: "$120 / session",
       features: ["Postural assessment", "Spinal mobilization", "Ergonomic advice", "Custom exercise plan"]
     },
     {
       id: "musculoskeletal",
       title: "Musculoskeletal Physiotherapy",
       description: "Expert treatment for conditions affecting muscles, bones, joints, and connective tissues. We focus on restoring optimal movement and reducing pain through manual therapy and exercise.",
-      price: "$130 / session",
       features: ["Joint mobilization", "Muscle energy techniques", "Injury prevention", "Taping and bracing advice"]
     },
     {
       id: "stroke-rehabilitation",
       title: "Stroke Rehabilitation",
       description: "Specialized neuro-physiotherapy to help stroke survivors regain movement, coordination, and independence in their daily lives.",
-      price: "$150 / session",
       features: ["Gait re-training", "Balance exercises", "Motor learning", "Functional tasks"]
     },
     {
       id: "sports-injury",
       title: "Sports Injury Recovery",
       description: "Accelerate your return to sport safely. We treat sprains, strains, tears, and tendinopathies with evidence-based protocols.",
-      price: "$130 / session",
       features: ["Acute injury management", "Soft tissue release", "Biomechanics analysis", "Return-to-sport planning"]
     },
     {
       id: "elderly-care",
       title: "Elderly Care",
       description: "Gentle, effective therapy focused on maintaining mobility, preventing falls, and managing age-related conditions like osteoarthritis.",
-      price: "$110 / session",
       features: ["Fall risk assessment", "Joint mobility work", "Strength maintenance", "Home safety review"]
     }
   ];
@@ -76,11 +71,8 @@ const Services = () => {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
         {servicesList.map((service, idx) => (
           <div key={idx} id={service.id} className="organic-card p-10 flex flex-col transition-all duration-500">
-            <div className="flex justify-between items-start mb-6">
+            <div className="mb-6">
               <h2 className="text-3xl font-serif font-bold text-foreground">{service.title}</h2>
-              <span className="bg-[#E6DCCD]/50 text-accent-foreground px-4 py-2 rounded-full font-bold text-sm">
-                {service.price}
-              </span>
             </div>
             
             <p className="text-muted-foreground mb-8 text-lg leading-relaxed flex-grow">
