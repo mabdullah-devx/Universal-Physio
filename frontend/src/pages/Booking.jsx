@@ -104,10 +104,16 @@ const Booking = () => {
     setErrorMessage('');
 
     try {
+      // Normalize Pakistani Phone Number
+      let rawPhone = formData.phone.replace(/\D/g, '');
+      if (rawPhone.startsWith('03') && rawPhone.length === 11) {
+        rawPhone = '92' + rawPhone.slice(1);
+      }
+
       // 3. Data Sanitization
       const payload = {
         name: sanitizeInput(formData.name),
-        phone: formData.phone.replace(/\D/g, ''),
+        phone: rawPhone,
         email: sanitizeInput(formData.email),
         service: sanitizeInput(formData.service),
         area: sanitizeInput(formData.area),
@@ -125,7 +131,8 @@ const Booking = () => {
 
       if (!bookingResponse.ok) {
         const errData = await bookingResponse.json().catch(() => ({}));
-        throw new Error(errData.error || 'Failed to create booking');
+        const detailMsg = errData.details && errData.details[0] ? errData.details[0].message : null;
+        throw new Error(detailMsg || errData.error || 'Failed to create booking');
       }
 
       // Success

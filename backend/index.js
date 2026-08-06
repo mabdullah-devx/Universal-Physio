@@ -107,13 +107,20 @@ const authMiddleware = async (req, res, next) => {
 // Booking validation schema
 const bookingSchema = z.object({
   name: z.string().min(1, 'Name is required').trim(),
-  phone: z.string().regex(/^923\d{9}$/, 'Phone must be 923XXXXXXXXX (12 digits)'),
+  phone: z.string().transform((val) => {
+    let clean = val.replace(/\D/g, '');
+    if (clean.startsWith('03') && clean.length === 11) {
+      clean = '92' + clean.slice(1);
+    }
+    return clean;
+  }).refine((val) => /^923\d{9}$/.test(val) || /^03\d{9}$/.test(val), 'Invalid Pakistani phone number (e.g. 03001234567 or 923001234567)'),
   email: z.string().email('Invalid email address').trim(),
   area: z.string().min(1, 'Area is required'),
   address: z.string().min(1, 'Address is required').trim(),
   service: z.string().min(1, 'Service is required'),
   date: z.string().refine((val) => {
-    const selectedDate = new Date(val);
+    if (!val) return false;
+    const selectedDate = new Date(val + 'T00:00:00');
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return selectedDate >= today;
