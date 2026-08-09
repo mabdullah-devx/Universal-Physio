@@ -14,9 +14,9 @@ const schemaOrgJSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "MedicalBusiness",
   "name": "Universal Physio Care",
-  "image": "https://universalphysio.fit/og-image.jpg",
-  "@id": "https://universalphysio.fit",
-  "url": "https://universalphysio.fit",
+  "image": "https://www.universalphysio.fit/og-image.jpg",
+  "@id": "https://www.universalphysio.fit",
+  "url": "https://www.universalphysio.fit",
   "telephone": "+923064954970",
   "email": "info@universalphysio.fit",
   "priceRange": "$$",
@@ -85,14 +85,14 @@ function startServer() {
 
 async function getRoutesToPrerender() {
   const staticRoutes = [
-    { path: '/', title: 'Universal Physio Care | DPT Home Visit Physiotherapy Lahore', description: 'Certified Doctor of Physical Therapy (DPT) home visit services in Lahore. Expert treatment for spine, joints, stroke rehabilitation & sports injuries.', canonical: 'https://universalphysio.fit/' },
-    { path: '/about', title: 'About Us | Universal Physio Care Lahore', description: 'Learn about our team of certified Doctors of Physical Therapy (DPT) providing home visit rehabilitation services across Lahore.', canonical: 'https://universalphysio.fit/about' },
-    { path: '/contact', title: 'Contact Us | Universal Physio Care Lahore', description: 'Get in touch with Universal Physio Care. Call +92 3064954970 or email info@universalphysio.fit for home physical therapy visits.', canonical: 'https://universalphysio.fit/contact' },
-    { path: '/booking', title: 'Book Appointment | Universal Physio Care', description: 'Schedule your home physical therapy appointment in Lahore. Select your preferred date, time, and specialized treatment.', canonical: 'https://universalphysio.fit/booking' },
-    { path: '/areas-we-cover', title: 'Areas We Cover in Lahore | Universal Physio Care', description: 'DPT home visit physical therapy available in Gulberg, DHA, Model Town, Johar Town, Bahria Town, and across Lahore.', canonical: 'https://universalphysio.fit/areas-we-cover' },
-    { path: '/blog', title: 'Health Blog & Recovery Tips | Universal Physio Care', description: 'Evidence-based physical therapy insights, back pain advice, stroke recovery exercises, and wellness guides from certified DPT specialists.', canonical: 'https://universalphysio.fit/blog' },
-    { path: '/privacy-policy', title: 'Privacy Policy | Universal Physio Care', description: 'Privacy Policy and patient data protection guidelines for Universal Physio Care.', canonical: 'https://universalphysio.fit/privacy-policy' },
-    { path: '/terms-of-service', title: 'Terms of Service | Universal Physio Care', description: 'Terms of Service and treatment agreement guidelines for Universal Physio Care.', canonical: 'https://universalphysio.fit/terms-of-service' }
+    { path: '/', title: 'Universal Physio Care | DPT Home Visit Physiotherapy Lahore', description: 'Certified Doctor of Physical Therapy (DPT) home visit services in Lahore. Expert treatment for spine, joints, stroke rehabilitation & sports injuries.', canonical: 'https://www.universalphysio.fit/' },
+    { path: '/about', title: 'About Us | Universal Physio Care Lahore', description: 'Learn about our team of certified Doctors of Physical Therapy (DPT) providing home visit rehabilitation services across Lahore.', canonical: 'https://www.universalphysio.fit/about' },
+    { path: '/contact', title: 'Contact Us | Universal Physio Care Lahore', description: 'Get in touch with Universal Physio Care. Call +92 3064954970 or email info@universalphysio.fit for home physical therapy visits.', canonical: 'https://www.universalphysio.fit/contact' },
+    { path: '/booking', title: 'Book Appointment | Universal Physio Care', description: 'Schedule your home physical therapy appointment in Lahore. Select your preferred date, time, and specialized treatment.', canonical: 'https://www.universalphysio.fit/booking' },
+    { path: '/areas-we-cover', title: 'Areas We Cover in Lahore | Universal Physio Care', description: 'DPT home visit physical therapy available in Gulberg, DHA, Model Town, Johar Town, Bahria Town, and across Lahore.', canonical: 'https://www.universalphysio.fit/areas-we-cover' },
+    { path: '/blog', title: 'Health Blog & Recovery Tips | Universal Physio Care', description: 'Evidence-based physical therapy insights, back pain advice, stroke recovery exercises, and wellness guides from certified DPT specialists.', canonical: 'https://www.universalphysio.fit/blog' },
+    { path: '/privacy-policy', title: 'Privacy Policy | Universal Physio Care', description: 'Privacy Policy and patient data protection guidelines for Universal Physio Care.', canonical: 'https://www.universalphysio.fit/privacy-policy' },
+    { path: '/terms-of-service', title: 'Terms of Service | Universal Physio Care', description: 'Terms of Service and treatment agreement guidelines for Universal Physio Care.', canonical: 'https://www.universalphysio.fit/terms-of-service' }
   ];
 
   try {
@@ -103,7 +103,7 @@ async function getRoutesToPrerender() {
           path: `/blog/${b.slug}`,
           title: `${b.title} | Universal Physio Care Blog`,
           description: `Read ${b.title} on Universal Physio Care blog.`,
-          canonical: `https://universalphysio.fit/blog/${b.slug}`
+          canonical: `https://www.universalphysio.fit/blog/${b.slug}`
         });
       });
     }

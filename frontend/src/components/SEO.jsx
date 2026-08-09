@@ -7,10 +7,10 @@ const SEO = ({
   name = "Universal Physio Care", 
   type = "website",
   url,
-  image = "https://universalphysio.fit/hero-bg.png",
+  image = "https://www.universalphysio.fit/hero-bg.png",
   noindex = false
 }) => {
-  const canonicalUrl = url || (typeof window !== 'undefined' ? window.location.href.split('?')[0] : 'https://universalphysio.fit');
+  const canonicalUrl = url || (typeof window !== 'undefined' ? window.location.href.split('?')[0].replace('https://universalphysio.fit', 'https://www.universalphysio.fit') : 'https://www.universalphysio.fit');
 
   const medicalSchema = {
     "@context": "https://schema.org",
@@ -18,7 +18,7 @@ const SEO = ({
     "name": name,
     "description": description,
     "url": canonicalUrl,
-    "logo": "https://universalphysio.fit/Physiotherapy%20Clinic%20Logo.svg",
+    "logo": "https://www.universalphysio.fit/Physiotherapy%20Clinic%20Logo.svg",
     "image": image,
     "telephone": "+923064954970",
     "email": "info@universalphysio.fit",
@@ -60,7 +60,7 @@ const SEO = ({
     ]
   };
 
-  const isHomePage = canonicalUrl === 'https://universalphysio.fit' || canonicalUrl === 'https://universalphysio.fit/';
+  const isHomePage = canonicalUrl === 'https://www.universalphysio.fit' || canonicalUrl === 'https://www.universalphysio.fit/';
 
   const breadcrumbSchema = !isHomePage ? {
     "@context": "https://schema.org",
@@ -70,7 +70,7 @@ const SEO = ({
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://universalphysio.fit"
+        "item": "https://www.universalphysio.fit"
       },
       {
         "@type": "ListItem",

@@ -43,22 +43,22 @@ async function generateSitemap() {
 
   const xmlUrls = [
     ...staticRoutes.map(route => `  <url>
-    <loc>https://universalphysio.fit${route}</loc>
+    <loc>https://www.universalphysio.fit${route}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>${route === '' ? 'daily' : 'weekly'}</changefreq>
     <priority>${route === '' ? '1.0' : '0.8'}</priority>
     <image:image>
-      <image:loc>https://universalphysio.fit/hero-bg.png</image:loc>
+      <image:loc>https://www.universalphysio.fit/hero-bg.png</image:loc>
       <image:title>Universal Physio Care Lahore</image:title>
     </image:image>
   </url>`),
     ...blogRoutes.map(item => `  <url>
-    <loc>https://universalphysio.fit${item.url}</loc>
+    <loc>https://www.universalphysio.fit${item.url}</loc>
     <lastmod>${item.lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <image:image>
-      <image:loc>https://universalphysio.fit/hero-bg.png</image:loc>
+      <image:loc>https://www.universalphysio.fit/hero-bg.png</image:loc>
       <image:title>Physiotherapy Recovery Guide</image:title>
     </image:image>
   </url>`)
