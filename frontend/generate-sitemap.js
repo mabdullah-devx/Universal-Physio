@@ -75,7 +75,17 @@ ${xmlUrls.join('\n')}
   }
 
   fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapContent, 'utf8');
-  console.log('✅ sitemap.xml successfully generated in ./public/sitemap.xml');
+
+  const sitemapIndexContent = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://www.universalphysio.fit/sitemap.xml</loc>
+    <lastmod>${currentDate}</lastmod>
+  </sitemap>
+</sitemapindex>`;
+
+  fs.writeFileSync(path.join(publicDir, 'sitemap_index.xml'), sitemapIndexContent, 'utf8');
+  console.log('✅ sitemap.xml & sitemap_index.xml successfully generated in ./public');
 }
 
 generateSitemap().catch(console.error);
