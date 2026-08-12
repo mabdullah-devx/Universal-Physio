@@ -11,7 +11,7 @@ async function generateSitemap() {
   console.log('Generating dynamic sitemap.xml...');
 
   const staticRoutes = [
-    '',
+    '/',
     '/services',
     '/booking',
     '/about',
@@ -42,16 +42,20 @@ async function generateSitemap() {
   const currentDate = new Date().toISOString().split('T')[0];
 
   const xmlUrls = [
-    ...staticRoutes.map(route => `  <url>
-    <loc>https://www.universalphysio.fit${route}</loc>
+    ...staticRoutes.map(route => {
+      const loc = route === '/' ? 'https://www.universalphysio.fit/' : `https://www.universalphysio.fit${route}`;
+      const isHome = route === '/';
+      return `  <url>
+    <loc>${loc}</loc>
     <lastmod>${currentDate}</lastmod>
-    <changefreq>${route === '' ? 'daily' : 'weekly'}</changefreq>
-    <priority>${route === '' ? '1.0' : '0.8'}</priority>
+    <changefreq>${isHome ? 'daily' : 'weekly'}</changefreq>
+    <priority>${isHome ? '1.0' : '0.8'}</priority>
     <image:image>
       <image:loc>https://www.universalphysio.fit/hero-bg.png</image:loc>
       <image:title>Universal Physio Care Lahore</image:title>
     </image:image>
-  </url>`),
+  </url>`;
+    }),
     ...blogRoutes.map(item => `  <url>
     <loc>https://www.universalphysio.fit${item.url}</loc>
     <lastmod>${item.lastmod}</lastmod>
