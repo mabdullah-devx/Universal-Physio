@@ -2,7 +2,7 @@ import SEO from '../components/SEO';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Target, Users, Award, ShieldCheck, HeartPulse, CheckCircle2, 
+  Target, ShieldCheck, HeartPulse, CheckCircle2, 
   MapPin, Clock, Stethoscope, ChevronDown, Activity, Sparkles, 
   Sparkle, Calendar, ArrowRight, ShieldAlert 
 } from 'lucide-react';
@@ -67,44 +67,6 @@ const About = () => {
     }
   ];
 
-  const doctors = [
-    {
-      name: "Dr. Sarah Jenkins, DPT",
-      initials: "SJ",
-      role: "Lead Neurological Specialist",
-      credentials: "MS Neurological Physical Therapy (USA)",
-      experience: "10+ Years Clinical Experience",
-      spec: "Stroke Rehab & Nerve Mobility",
-      bio: "Dr. Sarah specializes in complex neurological rehabilitation, helping patients regain movement and independence after stroke, spinal trauma, or nerve injury."
-    },
-    {
-      name: "Dr. David Chen, DPT",
-      initials: "DC",
-      role: "Senior Sports & Musculoskeletal Specialist",
-      credentials: "Certified Manual Therapist (OMPT)",
-      experience: "8+ Years Clinical Experience",
-      spec: "Joint Pain & ACL Rehab",
-      bio: "Dr. David focuses on sports medicine, joint replacement recovery, and advanced manual therapy techniques for spinal and peripheral joint dysfunctions."
-    },
-    {
-      name: "Dr. Emma Robertson, DPT",
-      initials: "ER",
-      role: "Geriatric & Post-Op Specialist",
-      credentials: "Specialist in Mobility & Fall Prevention",
-      experience: "9+ Years Clinical Experience",
-      spec: "Post-Op Knee/Hip Rehab & Senior Care",
-      bio: "Dr. Emma is passionate about senior wellness, post-surgical rehabilitation, and helping elderly patients maintain dignity, strength, and mobility at home."
-    },
-    {
-      name: "Dr. Bilal Ahmed, DPT",
-      initials: "BA",
-      role: "Spine & Postural Care Specialist",
-      credentials: "Certified Dry Needling Practitioner",
-      experience: "7+ Years Clinical Experience",
-      spec: "Sciatica & Postural Alignment",
-      bio: "Dr. Bilal expertises in ergonomic spinal alignment, chronic lower back pain management, and specialized myofascial release protocols."
-    }
-  ];
 
   const faqs = [
     {
@@ -127,7 +89,7 @@ const About = () => {
 
   return (
     <div className="w-full pt-28 pb-24 bg-[#FDFBF9]">
-      <SEO title="About Us - Certified Home Physiotherapy" description="Learn about Universal Physio Care, Lahore's premier Doctor of Physical Therapy home service. Meet our specialists and explore our evidence-based care philosophy." />
+      <SEO title="About Us - Certified Home Physiotherapy" description="Learn about Universal Physio Care, Lahore's premier Doctor of Physical Therapy home service. Explore our evidence-based care philosophy." />
       
       {/* 1. Hero & Mission Section */}
       <div className="max-w-7xl mx-auto px-6 mb-20">
@@ -253,50 +215,6 @@ const About = () => {
         </div>
       </div>
 
-      {/* 5. Clinical Specialists / Team */}
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#5C6F52]/10 text-xs font-bold uppercase tracking-wider text-[#5C6F52] mb-3">
-            <Users className="w-4 h-4" />
-            <span>Doctor of Physical Therapy Board</span>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-serif font-bold text-[#2C3E2D]">Meet Our Lead Specialists</h2>
-          <p className="text-[#5C6F52] text-base mt-3">Experienced, board-certified physical therapists dedicated to your recovery.</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {doctors.map((doc, idx) => (
-            <div key={idx} className="bg-white rounded-[32px] border border-[#F0F4EC] p-7 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1.5">
-              <div>
-                {/* Doctor Avatar Badge */}
-                <div className="flex flex-col items-center text-center mb-6">
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#5C6F52] via-[#3E4F37] to-[#2C3E2D] text-white flex items-center justify-center text-2xl font-serif font-bold shadow-lg border-4 border-white mb-4 group-hover:scale-105 transition-transform duration-300">
-                    {doc.initials}
-                  </div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#A4B494] block mb-1">
-                    {doc.role}
-                  </span>
-                  <h3 className="text-xl font-serif font-bold text-[#2C3E2D] mb-2">{doc.name}</h3>
-                  <div className="inline-block px-3 py-1 rounded-full bg-[#F4F7F2] text-[#5C6F52] text-[11px] font-semibold border border-[#E5EADF] mb-3">
-                    {doc.credentials}
-                  </div>
-                  <p className="text-xs text-[#5C6F52] font-semibold flex items-center justify-center gap-1.5">
-                    <Award className="w-3.5 h-3.5 text-[#C18C5D]" /> {doc.experience}
-                  </p>
-                </div>
-
-                <p className="text-xs text-[#5C6F52] leading-relaxed mb-6 text-center">{doc.bio}</p>
-              </div>
-
-              <div className="pt-4 border-t border-[#F0F4EC] text-center">
-                <span className="inline-block w-full py-2 px-3 rounded-xl bg-[#F4F7F2] text-[11px] font-bold text-[#5C6F52]">
-                  Specialty: {doc.spec}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* 6. Accreditation & Safety Guarantee */}
       <div className="max-w-5xl mx-auto px-6 my-10">
