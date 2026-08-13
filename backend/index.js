@@ -263,11 +263,6 @@ app.patch('/api/bookings/:id', authMiddleware, async (req, res) => {
     if (error) throw error;
     const updatedBooking = data[0];
 
-    // Trigger email notification on status approval/confirmation
-    if (updatedBooking && (status === 'approved' || status === 'confirmed')) {
-      sendBookingConfirmationEmail(updatedBooking).catch(err => console.error('Brevo email trigger error:', err));
-    }
-
     res.json({ message: 'Status updated successfully', booking: updatedBooking });
   } catch (error) {
     console.error('Error updating status:', error);
