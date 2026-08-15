@@ -27,11 +27,11 @@ body::before {
 
 @layer components {
   .btn-primary {
-    @apply flex items-center justify-center h-12 px-8 rounded-full bg-[#058B94] text-white font-bold shadow-soft transition-all duration-300 hover:scale-105 hover:shadow-[0_6px_24px_-4px_rgba(5,139,148,0.3)] active:scale-95;
+    @apply flex items-center justify-center h-12 px-6 rounded-full bg-[#058B94] text-white font-bold shadow-soft transition-all duration-300 hover:scale-105 hover:shadow-[0_6px_24px_-4px_rgba(5,139,148,0.3)] active:scale-95 whitespace-nowrap;
   }
   
   .btn-outline {
-    @apply flex items-center justify-center h-12 px-8 rounded-full border-2 border-secondary text-secondary font-bold transition-all duration-300 hover:scale-105 hover:bg-secondary/10 active:scale-95;
+    @apply flex items-center justify-center h-12 px-6 rounded-full border-2 border-secondary text-secondary font-bold transition-all duration-300 hover:scale-105 hover:bg-secondary/10 active:scale-95 whitespace-nowrap;
   }
   
   .btn-ghost {

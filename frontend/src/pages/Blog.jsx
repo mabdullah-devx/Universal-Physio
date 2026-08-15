@@ -4,6 +4,14 @@ import { Link } from 'react-router-dom';
 import { Calendar, Clock, ArrowRight, Search, Tag, User, Sparkles, BookOpen, Filter } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 
+const blogHubSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Physiotherapy & Health Recovery Blog",
+  "url": "https://www.universalphysio.fit/blog",
+  "description": "Evidence-based physical therapy insights, back pain advice, stroke recovery exercises, and wellness guides from certified Doctor of Physical Therapy specialists in Lahore."
+};
+
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,7 +56,12 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen pt-28 pb-20 bg-[#FDFBF9]">
-      <SEO title="Health & Wellness Blog" description="Expert physiotherapy articles, recovery guides, and wellness tips from certified specialists in Lahore." />
+      <SEO 
+        title="Physiotherapy & Health Recovery Blog | Universal Physio" 
+        description="Evidence-based physical therapy insights, spine health advice, stroke recovery exercises, and wellness guides from certified DPT specialists in Lahore."
+        path="/blog"
+        schema={blogHubSchema}
+      />
       
       {/* Header Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
@@ -245,7 +258,7 @@ const Blog = () => {
             <span className="text-xs font-bold uppercase tracking-widest text-[#A4B494] block mb-3">Stay Informed & Healthy</span>
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">Subscribe for Recovery Insights</h2>
             <p className="text-white/80 text-sm md:text-base mb-8 leading-relaxed">
-              Get monthly exercise guides, posture correction tips, and expert injury prevention advice delivered straight to your inbox.
+              Get monthly exercise guides, posture correction tips, and clinical injury prevention advice delivered straight to your inbox.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <input 

@@ -13,10 +13,24 @@ async function generateSitemap() {
   const staticRoutes = [
     '/',
     '/services',
+    '/services/back-and-neck-pain-physiotherapy',
+    '/services/stroke-rehabilitation-physiotherapy',
+    '/services/sports-injury-physiotherapy',
+    '/services/post-surgery-rehabilitation-physiotherapy',
+    '/services/elderly-care-physiotherapy',
     '/booking',
     '/about',
     '/contact',
     '/areas-we-cover',
+    '/areas-we-cover/dha-lahore',
+    '/areas-we-cover/gulberg-lahore',
+    '/areas-we-cover/johar-town-lahore',
+    '/areas-we-cover/model-town-lahore',
+    '/areas-we-cover/bahria-town-lahore',
+    '/areas-we-cover/valencia-lahore',
+    '/areas-we-cover/wapda-town-lahore',
+    '/areas-we-cover/faisal-town-lahore',
+    '/areas-we-cover/iqbal-town-lahore',
     '/blog',
     '/privacy-policy',
     '/terms-of-service'
@@ -27,7 +41,7 @@ async function generateSitemap() {
     const { data: blogs, error } = await supabase
       .from('blogs')
       .select('slug, created_at')
-      .eq('published', true);
+      .order('created_at', { ascending: false });
 
     if (!error && blogs && blogs.length > 0) {
       blogRoutes = blogs.map(b => ({

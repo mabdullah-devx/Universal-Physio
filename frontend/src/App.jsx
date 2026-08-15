@@ -26,6 +26,24 @@ const BlogPost = lazy(() => import('./pages/BlogPost'));
 const BookingStatus = lazy(() => import('./pages/BookingStatus'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
+// Service Detail Routes
+const BackAndNeckPain = lazy(() => import('./pages/services/BackAndNeckPain'));
+const StrokeRehabilitation = lazy(() => import('./pages/services/StrokeRehabilitation'));
+const SportsInjury = lazy(() => import('./pages/services/SportsInjury'));
+const PostSurgeryRehab = lazy(() => import('./pages/services/PostSurgeryRehab'));
+const ElderlyCare = lazy(() => import('./pages/services/ElderlyCare'));
+
+// Location Detail Routes
+const DHALahore = lazy(() => import('./pages/areas/DHALahore'));
+const GulbergLahore = lazy(() => import('./pages/areas/GulbergLahore'));
+const JoharTownLahore = lazy(() => import('./pages/areas/JoharTownLahore'));
+const ModelTownLahore = lazy(() => import('./pages/areas/ModelTownLahore'));
+const BahriaTownLahore = lazy(() => import('./pages/areas/BahriaTownLahore'));
+const ValenciaLahore = lazy(() => import('./pages/areas/ValenciaLahore'));
+const WapdaTownLahore = lazy(() => import('./pages/areas/WapdaTownLahore'));
+const FaisalTownLahore = lazy(() => import('./pages/areas/FaisalTownLahore'));
+const IqbalTownLahore = lazy(() => import('./pages/areas/IqbalTownLahore'));
+
 // Fallback loader component
 const PageLoader = () => (
   <div className="flex items-center justify-center min-h-[50vh]">
@@ -45,6 +63,11 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/services" element={<Services />} />
+              <Route path="/services/back-and-neck-pain-physiotherapy" element={<BackAndNeckPain />} />
+              <Route path="/services/stroke-rehabilitation-physiotherapy" element={<StrokeRehabilitation />} />
+              <Route path="/services/sports-injury-physiotherapy" element={<SportsInjury />} />
+              <Route path="/services/post-surgery-rehabilitation-physiotherapy" element={<PostSurgeryRehab />} />
+              <Route path="/services/elderly-care-physiotherapy" element={<ElderlyCare />} />
               <Route path="/booking" element={<Booking />} />
               <Route path="/booking-status" element={<BookingStatus />} />
               <Route path="/blog" element={<Blog />} />
@@ -52,6 +75,15 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/areas-we-cover" element={<AreasWeCover />} />
+              <Route path="/areas-we-cover/dha-lahore" element={<DHALahore />} />
+              <Route path="/areas-we-cover/gulberg-lahore" element={<GulbergLahore />} />
+              <Route path="/areas-we-cover/johar-town-lahore" element={<JoharTownLahore />} />
+              <Route path="/areas-we-cover/model-town-lahore" element={<ModelTownLahore />} />
+              <Route path="/areas-we-cover/bahria-town-lahore" element={<BahriaTownLahore />} />
+              <Route path="/areas-we-cover/valencia-lahore" element={<ValenciaLahore />} />
+              <Route path="/areas-we-cover/wapda-town-lahore" element={<WapdaTownLahore />} />
+              <Route path="/areas-we-cover/faisal-town-lahore" element={<FaisalTownLahore />} />
+              <Route path="/areas-we-cover/iqbal-town-lahore" element={<IqbalTownLahore />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />

@@ -1,105 +1,121 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
+
+const SITE_ORIGIN = 'https://www.universalphysio.fit';
 
 const SEO = ({ 
   title, 
-  description = "Universal Physio Care - Premium in-home physical therapy in Lahore. Certified Doctor of Physical Therapy (DPT) for back pain, stroke rehab, sports injuries, and elderly care.", 
-  name = "Universal Physio Care", 
+  description = "Universal Physio Care - Premium Doctor of Physical Therapy (DPT) home visit services in Lahore for spine care, stroke rehab, sports recovery & elderly mobility.", 
+  name = "Universal Physio", 
   type = "website",
   url,
+  path,
   image = "https://www.universalphysio.fit/hero-bg.png",
-  noindex = false
+  noindex = false,
+  schema = null,
+  breadcrumbs = null
 }) => {
-  const canonicalUrl = url || (typeof window !== 'undefined' ? window.location.href.split('?')[0].replace('https://universalphysio.fit', 'https://www.universalphysio.fit') : 'https://www.universalphysio.fit');
+  const location = useLocation();
 
-  const medicalSchema = {
-    "@context": "https://schema.org",
-    "@type": "MedicalBusiness",
-    "name": name,
-    "description": description,
-    "url": canonicalUrl,
-    "logo": "https://www.universalphysio.fit/Physiotherapy%20Clinic%20Logo.svg",
-    "image": image,
-    "telephone": "+923064954970",
-    "email": "info@universalphysio.fit",
-    "priceRange": "₨₨",
-    "medicalSpecialty": "Physiotherapy",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Gulberg III",
-      "addressLocality": "Lahore",
-      "addressRegion": "Punjab",
-      "postalCode": "54000",
-      "addressCountry": "PK"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 31.5204,
-      "longitude": 74.3587
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      "opens": "08:00",
-      "closes": "20:00"
-    },
-    "areaServed": [
-      { "@type": "City", "name": "Lahore" },
-      { "@type": "Place", "name": "DHA Lahore" },
-      { "@type": "Place", "name": "Gulberg Lahore" },
-      { "@type": "Place", "name": "Model Town Lahore" },
-      { "@type": "Place", "name": "Johar Town Lahore" },
-      { "@type": "Place", "name": "Bahria Town Lahore" }
-    ],
-    "availableService": [
-      { "@type": "MedicalProcedure", "name": "Back & Neck Pain Physiotherapy" },
-      { "@type": "MedicalProcedure", "name": "Musculoskeletal Rehabilitation" },
-      { "@type": "MedicalProcedure", "name": "Stroke Rehabilitation" },
-      { "@type": "MedicalProcedure", "name": "Post-Surgery Rehabilitation" },
-      { "@type": "MedicalProcedure", "name": "Elderly Care & Fall Prevention" }
-    ]
-  };
+  // Resolve current pathname deterministically
+  const currentPath = path || (url ? (url.startsWith('http') ? new URL(url).pathname : url) : (location ? location.pathname : '/'));
+  
+  // Format canonical URL strictly
+  let canonicalUrl = SITE_ORIGIN;
+  if (url && url.startsWith('http')) {
+    canonicalUrl = url;
+  } else {
+    const cleanPath = (currentPath || '/').split('?')[0];
+    if (cleanPath === '/' || cleanPath === '') {
+      canonicalUrl = `${SITE_ORIGIN}/`;
+    } else {
+      canonicalUrl = `${SITE_ORIGIN}${cleanPath.startsWith('/') ? '' : '/'}${cleanPath}`;
+    }
+  }
 
-  const isHomePage = canonicalUrl === 'https://www.universalphysio.fit' || canonicalUrl === 'https://www.universalphysio.fit/';
+  // Format page title cleanly without repeating brand name if already included
+  const pageTitle = !title 
+    ? "Universal Physio Care | Home Physiotherapy in Lahore"
+    : title.toLowerCase().includes("universal physio")
+      ? title
+      : `${title} | ${name}`;
 
-  const breadcrumbSchema = !isHomePage ? {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://www.universalphysio.fit"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": title.replace(/\|.*$/, '').trim(),
-        "item": canonicalUrl
-      }
-    ]
-  } : null;
+  const isHomePage = canonicalUrl === `${SITE_ORIGIN}/` || canonicalUrl === SITE_ORIGIN;
+
+  // Generate breadcrumb list schema if breadcrumbs array is provided or for non-homepage pages
+  let breadcrumbSchema = null;
+  if (breadcrumbs && Array.isArray(breadcrumbs) && breadcrumbs.length > 0) {
+    breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": `${SITE_ORIGIN}/`
+        },
+        ...breadcrumbs.map((crumb, idx) => ({
+          "@type": "ListItem",
+          "position": idx + 2,
+          "name": crumb.name,
+          "item": crumb.path.startsWith('http') ? crumb.path : `${SITE_ORIGIN}${crumb.path.startsWith('/') ? '' : '/'}${crumb.path}`
+        }))
+      ]
+    };
+  } else if (!isHomePage && title) {
+    breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": `${SITE_ORIGIN}/`
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": title.replace(/\|.*$/, '').trim(),
+          "item": canonicalUrl
+        }
+      ]
+    };
+  }
+
+  // Normalize schemas to array for rendering
+  const schemaList = [];
+  if (schema) {
+    if (Array.isArray(schema)) {
+      schemaList.push(...schema);
+    } else {
+      schemaList.push(schema);
+    }
+  }
+  if (breadcrumbSchema) {
+    schemaList.push(breadcrumbSchema);
+  }
 
   return (
     <Helmet>
       {/* Standard metadata tags */}
-      <title>{title} | {name}</title>
-      <meta name='description' content={description} />
+      <title>{pageTitle}</title>
+      <meta name="description" content={description} />
       {noindex && <meta name="robots" content="noindex, nofollow" />}
       
       {/* Open Graph tags */}
       <meta property="og:type" content={type} />
-      <meta property="og:title" content={`${title} | ${name}`} />
+      <meta property="og:title" content={pageTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:image" content={image} />
       <meta property="og:site_name" content="Universal Physio Care" />
       
-      {/* Twitter tags */}
-      <meta name="twitter:creator" content={name} />
+      {/* Twitter Card tags */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={`${title} | ${name}`} />
+      <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
 
@@ -107,16 +123,14 @@ const SEO = ({
       <link rel="canonical" href={canonicalUrl} />
 
       {/* JSON-LD Structured Data */}
-      <script type="application/ld+json">
-        {JSON.stringify(medicalSchema)}
-      </script>
-      {breadcrumbSchema && (
-        <script type="application/ld+json">
-          {JSON.stringify(breadcrumbSchema)}
+      {schemaList.map((sch, idx) => (
+        <script key={idx} type="application/ld+json">
+          {JSON.stringify(sch)}
         </script>
-      )}
+      ))}
     </Helmet>
   );
 };
 
 export default SEO;
+

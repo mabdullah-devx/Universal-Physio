@@ -7,6 +7,19 @@ import {
   Sparkle, Calendar, ArrowRight, ShieldAlert 
 } from 'lucide-react';
 
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "About Universal Physio",
+  "url": "https://www.universalphysio.fit/about",
+  "description": "Learn about Universal Physio Care, providing Doctor of Physical Therapy (DPT) home visit services in Lahore. DPT specialists bringing professional care to your residence.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Universal Physio Care",
+    "url": "https://www.universalphysio.fit"
+  }
+};
+
 const About = () => {
   const [openFaq, setOpenFaq] = useState(null);
 
@@ -89,7 +102,12 @@ const About = () => {
 
   return (
     <div className="w-full pt-28 pb-24 bg-[#FDFBF9]">
-      <SEO title="About Us - Certified Home Physiotherapy" description="Learn about Universal Physio Care, Lahore's premier Doctor of Physical Therapy home service. Explore our evidence-based care philosophy." />
+      <SEO 
+        title="About Universal Physio | Physiotherapy Care in Lahore" 
+        description="Learn about Universal Physio Care, Lahore's Doctor of Physical Therapy home service. DPT specialists providing evidence-based in-home rehabilitation."
+        path="/about"
+        schema={aboutSchema}
+      />
       
       {/* 1. Hero & Mission Section */}
       <div className="max-w-7xl mx-auto px-6 mb-20">
@@ -101,11 +119,11 @@ const About = () => {
             </div>
             
             <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-[#2C3E2D] leading-tight">
-              Hospital-Grade Physical Therapy, <span className="italic font-light text-[#5C6F52]">In Your Home</span>
+              Professional Physical Therapy, <span className="italic font-light text-[#5C6F52]">In Your Home</span>
             </h1>
             
             <p className="text-base md:text-lg text-[#5C6F52] mb-6 leading-relaxed">
-              We believe that true healing begins where you feel most comfortable. Universal Physio Care was established with a singular mission: to eliminate the physical strain and stress of traveling to clinics by bringing Lahore's finest certified Doctors of Physical Therapy (DPT) straight to your doorstep.
+              We believe that true healing begins where you feel most comfortable. Universal Physio Care was established with a singular mission: to eliminate the physical strain and stress of traveling to clinics by bringing Doctors of Physical Therapy (DPT) straight to your doorstep.
             </p>
 
             <p className="text-base md:text-lg text-[#5C6F52] mb-8 leading-relaxed">
@@ -223,7 +241,7 @@ const About = () => {
             <div className="flex items-center gap-2 text-[#A4B494] text-xs font-bold uppercase tracking-widest">
               <ShieldCheck className="w-4 h-4" /> Quality & Safety First
             </div>
-            <h3 className="text-2xl md:text-3xl font-serif font-bold">Clinical Excellence Guaranteed</h3>
+            <h3 className="text-2xl md:text-3xl font-serif font-bold">Clinical Excellence & Safety</h3>
             <p className="text-white/80 text-sm max-w-lg leading-relaxed">
               Every practitioner at Universal Physio Care carries medical liability coverage, verified degrees, and strict sanitization standards for total peace of mind.
             </p>

@@ -148,14 +148,18 @@ const Booking = () => {
   if (status === 'success') {
     return (
       <div className="w-full min-h-[70vh] flex items-center justify-center pt-24 px-6">
-        <SEO title="Booking Submitted" />
+        <SEO 
+          title="Booking Submitted | Universal Physio" 
+          noindex={true}
+          path="/booking"
+        />
         <div className="organic-card p-12 text-center max-w-lg w-full flex flex-col items-center">
           <div className="h-24 w-24 rounded-full bg-[#5D7052]/10 flex items-center justify-center text-primary mb-6">
             <CheckCircle2 size={48} />
           </div>
           <h2 className="text-3xl font-serif font-bold mb-4">Request Submitted!</h2>
           <p className="text-muted-foreground mb-8 text-lg">
-            Thank you for choosing PhysioCare. Our admin will review your appointment request and reach out to confirm via WhatsApp shortly.
+            Thank you for choosing Universal Physio Care. Our admin will review your appointment request and reach out to confirm via WhatsApp shortly.
           </p>
           <button onClick={() => setStatus('idle')} className="btn-primary w-full">Book Another Session</button>
         </div>
@@ -165,7 +169,11 @@ const Booking = () => {
 
   return (
     <div className="w-full pt-32 pb-32 px-6 bg-[#FDFCFB]">
-      <SEO title="Book Appointment" />
+      <SEO 
+        title="Book Home Physiotherapy Session in Lahore | Universal Physio" 
+        description="Schedule your home physical therapy appointment in Lahore. Select your preferred date, time, service area (DHA, Gulberg, Johar Town, etc.) and DPT treatment."
+        path="/booking"
+      />
       <div className="max-w-5xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           

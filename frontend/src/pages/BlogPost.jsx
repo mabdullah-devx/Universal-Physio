@@ -254,9 +254,45 @@ const BlogPost = () => {
     );
   }
 
+  const articleSchema = blog ? {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": blog.title,
+    "description": blog.excerpt,
+    "image": blog.image_url || "https://www.universalphysio.fit/hero-bg.png",
+    "datePublished": blog.created_at ? new Date(blog.created_at).toISOString() : new Date().toISOString(),
+    "author": {
+      "@type": "Person",
+      "name": blog.author || "Universal Physio Care Specialist"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Universal Physio Care",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.universalphysio.fit/Physiotherapy%20Clinic%20Logo.svg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://www.universalphysio.fit/blog/${blog.slug}`
+    }
+  } : null;
+
   return (
     <div className="min-h-screen bg-[#FDFBF9] pb-24">
-      <SEO title={blog.title} description={blog.excerpt} />
+      <SEO 
+        title={`${blog.title} | Universal Physio Blog`} 
+        description={blog.excerpt}
+        path={`/blog/${blog.slug}`}
+        image={blog.image_url || "https://www.universalphysio.fit/hero-bg.png"}
+        type="article"
+        schema={articleSchema}
+        breadcrumbs={[
+          { name: "Blog", path: "/blog" },
+          { name: blog.title, path: `/blog/${blog.slug}` }
+        ]}
+      />
 
       {/* Scroll Progress Bar */}
       <div 

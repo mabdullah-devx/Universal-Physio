@@ -3,6 +3,25 @@ import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Send, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact Universal Physio",
+  "url": "https://www.universalphysio.fit/contact",
+  "mainEntity": {
+    "@type": "MedicalBusiness",
+    "name": "Universal Physio Care",
+    "telephone": "+923064954970",
+    "email": "info@universalphysio.fit",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lahore",
+      "addressRegion": "Punjab",
+      "addressCountry": "PK"
+    }
+  }
+};
+
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [loading, setLoading] = useState(false);
@@ -55,7 +74,12 @@ const Contact = () => {
 
   return (
     <div className="w-full pt-32 pb-20 px-6 max-w-7xl mx-auto">
-      <SEO title="Contact" />
+      <SEO 
+        title="Contact Universal Physio | Book Physiotherapy in Lahore" 
+        description="Contact Universal Physio Care in Lahore. Schedule your Doctor of Physical Therapy (DPT) home visit, call +92 3064954970 or message our support team."
+        path="/contact"
+        schema={contactSchema}
+      />
       <div className="text-center mb-16">
         <h1 className="text-5xl md:text-6xl font-serif font-bold mb-4">Get in Touch</h1>
         <p className="text-xl text-muted-foreground">We're here to answer any questions about our services.</p>

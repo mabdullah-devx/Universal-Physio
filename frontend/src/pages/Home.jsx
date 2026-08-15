@@ -16,13 +16,65 @@ const faqs = [
   { q: 'What is your cancellation policy?', a: 'We request at least 6-8 hours notice for cancellations or rescheduling. This allows us to offer the slot to another patient in need.' },
 ];
 
+const homeSchemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalBusiness",
+    "name": "Universal Physio Care",
+    "url": "https://www.universalphysio.fit/",
+    "logo": "https://www.universalphysio.fit/Physiotherapy%20Clinic%20Logo.svg",
+    "image": "https://www.universalphysio.fit/hero-bg.png",
+    "telephone": "+923064954970",
+    "email": "info@universalphysio.fit",
+    "priceRange": "₨₨",
+    "medicalSpecialty": "Physiotherapy",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lahore",
+      "addressRegion": "Punjab",
+      "addressCountry": "PK"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 31.5204,
+      "longitude": 74.3587
+    },
+    "areaServed": [
+      { "@type": "City", "name": "Lahore" },
+      { "@type": "Place", "name": "DHA Lahore" },
+      { "@type": "Place", "name": "Gulberg Lahore" },
+      { "@type": "Place", "name": "Model Town Lahore" },
+      { "@type": "Place", "name": "Johar Town Lahore" },
+      { "@type": "Place", "name": "Bahria Town Lahore" }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Universal Physio",
+    "url": "https://www.universalphysio.fit/"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.a
+      }
+    }))
+  }
+];
+
 const Home = () => {
   const [openFaq, setOpenFaq] = useState(null);
   const [serviceIndex, setServiceIndex] = useState(0);
 
   const servicesList = [
     { title: 'Back & Neck Pain', desc: 'Relief from chronic pain and stiffness through targeted therapy.', img: '/back-neck-pain.jpg' },
-    { title: 'Musculoskeletal', desc: 'Expert care for muscle, bone, and joint conditions to restore function.', img: '/musculoskeletal.png' },
+    { title: 'Musculoskeletal', desc: 'Professional care for muscle, bone, and joint conditions to restore function.', img: '/musculoskeletal.png' },
     { title: 'Stroke Rehabilitation', desc: 'Specialized neuro-physiotherapy to regain mobility & independence.', img: '/stroke-rehab.jpg' },
     { title: 'Post-Surgery Rehab', desc: 'Regain mobility and strength faster with guided rehabilitation.', img: '/post-surgery-rehab.webp' },
     { title: 'Elderly Care', desc: 'Improve balance, prevent falls, and maintain independence.', img: '/elderly-care.webp' }
@@ -44,7 +96,12 @@ const Home = () => {
 
   return (
     <div className="w-full">
-      <SEO title="Home" />
+      <SEO 
+        title="Home Physiotherapy in Lahore | Universal Physio" 
+        description="Book certified Doctor of Physical Therapy (DPT) home visit sessions in Lahore for back pain, stroke rehabilitation, sports injuries & elderly care."
+        path="/"
+        schema={homeSchemas}
+      />
       {/* Background Blobs */}
       <div className="absolute top-0 left-0 w-full h-screen overflow-hidden -z-10 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[#5D7052]/10 rounded-[60%_40%_30%_70%/60%_30%_70%_40%] blur-3xl"></div>
@@ -59,8 +116,8 @@ const Home = () => {
           <div className="space-y-8 animate-fade-in">
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#2D4A22] leading-tight animate-slide-up opacity-0 [animation-fill-mode:forwards]">
-                Expert Recovery <br />
-                <span className="text-[#8CC241]">In Your Own Space.</span>
+                Home Physiotherapy in Lahore <br />
+                <span className="text-[#8CC241]">Expert Recovery In Your Own Space.</span>
               </h1>
               <p className="text-base md:text-lg text-gray-500 max-w-lg leading-relaxed animate-slide-up opacity-0 [animation-fill-mode:forwards] animation-delay-100">
                 Recover faster and more comfortably with personalized physiotherapy sessions delivered directly to your home by certified professionals.
@@ -242,13 +299,13 @@ const Home = () => {
             </h2>
 
             <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
-              At **Universal Physio**, we believe that premium healthcare should adapt to your life, not the other way around. We provide hospital-grade physiotherapy in the comfort of your home.
+              At **Universal Physio**, we believe that quality healthcare should adapt to your life, not the other way around. We provide professional clinical physiotherapy in the comfort of your home.
             </p>
 
             {/* Feature Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mb-12">
               {[
-                { title: "Expert Doctors", desc: "Certified and licensed professionals." },
+                { title: "Qualified Doctors", desc: "Licensed DPT professionals." },
                 { title: "Personalized", desc: "1-on-1 dedicated attention." },
                 { title: "Modern Tech", desc: "Portable advanced equipment." },
                 { title: "Home Comfort", desc: "No travel stress or waiting." }

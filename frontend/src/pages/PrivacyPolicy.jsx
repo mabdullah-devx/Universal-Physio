@@ -5,7 +5,11 @@ import { Shield, Lock, Eye, FileText, Globe, Bell, Mail, Phone, MapPin, UserChec
 const PrivacyPolicy = () => {
   return (
     <div className="w-full pt-32 pb-20 px-6 bg-[#fdfdfb]">
-      <SEO title="Privacy Policy" />
+      <SEO 
+        title="Privacy Policy | Universal Physio" 
+        description="Privacy Policy and patient data protection guidelines for Universal Physio Care in Lahore."
+        path="/privacy-policy"
+      />
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#8CC241]/10 text-sm font-semibold text-[#2D4A22] mb-6">

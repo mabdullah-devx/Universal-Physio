@@ -5,7 +5,11 @@ import { ScrollText, CheckCircle2, AlertCircle, Calendar, User, CreditCard, Shie
 const TermsOfService = () => {
   return (
     <div className="w-full pt-32 pb-20 px-6 bg-[#fdfdfb]">
-      <SEO title="Terms Of Service" />
+      <SEO 
+        title="Terms of Service | Universal Physio" 
+        description="Terms of Service and treatment agreement guidelines for Universal Physio Care home visits in Lahore."
+        path="/terms-of-service"
+      />
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#088395]/10 text-sm font-semibold text-[#088395] mb-6">
