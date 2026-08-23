@@ -1,35 +1,14 @@
 import fs from 'fs';
 import path from 'path';
-import http from 'http';
-import { createClient } from '@supabase/supabase-js';
 
 const distDir = './dist';
-const PORT = 4567;
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://fadmrbtnmfrvvmwnycth.supabase.co';
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhZG1yYnRubWZydnZtd255Y3RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNTk1MDIsImV4cCI6MjA5MzYzNTUwMn0.Ck-UsOBpoeHCmDAMmq49L-4Yey4iBW-yG-bxjuc7poM';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-function cleanHeadTags(html, r) {
-  // 1. Clean Title
-  html = html.replace(/<title>.*?<\/title>/gi, '');
-  html = html.replace('</head>', `  <title>${r.title}</title>\n</head>`);
-
-  // 2. Clean Description
-  html = html.replace(/<meta name="description"[^>]*>/gi, '');
-  html = html.replace('</head>', `  <meta name="description" content="${r.description}">\n</head>`);
-
-  // 3. Clean Canonical
-  html = html.replace(/<link rel="canonical"[^>]*>/gi, '');
-  html = html.replace('</head>', `  <link rel="canonical" href="${r.canonical}">\n</head>`);
-
-  return html;
-}
-
-function generateRouteBodyHtml(route) {
+function generateRouteNoscriptHtml(route) {
   const p = route.path;
+  let bodyContent = '';
+
   if (p === '/about') {
-    return `<div id="root">
+    bodyContent = `
 <header><nav><a href="/">Home</a> | <a href="/services">Services</a> | <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/booking">Book Visit</a></nav></header>
 <main>
   <h1>About Universal Physio Care - DPT Specialists in Lahore</h1>
@@ -49,11 +28,9 @@ function generateRouteBodyHtml(route) {
     <p>Universal Physio Care - Gulberg III, Lahore, Punjab 54000, Pakistan</p>
     <p>Direct Call: +92 306 4954970 | Email: info@universalphysio.fit</p>
   </section>
-</main>
-</div>`;
-  }
-  if (p === '/contact') {
-    return `<div id="root">
+</main>`;
+  } else if (p === '/contact') {
+    bodyContent = `
 <header><nav><a href="/">Home</a> | <a href="/services">Services</a> | <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/booking">Book Visit</a></nav></header>
 <main>
   <h1>Contact Universal Physio Care - Book Home Visit in Lahore</h1>
@@ -72,11 +49,9 @@ function generateRouteBodyHtml(route) {
     <p>We provide rapid-response home physical therapy visits across DHA Lahore (Phases 1-13), Gulberg I-III, Johar Town, Model Town, Bahria Town, Valencia Town, Wapda Town, Faisal Town, and Allama Iqbal Town.</p>
     <a href="/booking">Schedule an Appointment Online</a>
   </section>
-</main>
-</div>`;
-  }
-  if (p === '/privacy-policy' || p === '/privacy') {
-    return `<div id="root">
+</main>`;
+  } else if (p === '/privacy-policy' || p === '/privacy') {
+    bodyContent = `
 <header><nav><a href="/">Home</a> | <a href="/services">Services</a> | <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/privacy">Privacy Policy</a></nav></header>
 <main>
   <h1>Privacy Policy - Universal Physio Care</h1>
@@ -99,11 +74,9 @@ function generateRouteBodyHtml(route) {
     <p>We implement stringent medical data security standards. Patient health records are strictly confidential and shared solely with your assigned Doctor of Physical Therapy. We never sell, rent, or trade your personal data to third parties for marketing purposes.</p>
     <p>For privacy inquiries, contact our data protection coordinator at info@universalphysio.fit or +92 306 4954970.</p>
   </section>
-</main>
-</div>`;
-  }
-  if (p === '/services') {
-    return `<div id="root">
+</main>`;
+  } else if (p === '/services') {
+    bodyContent = `
 <header><nav><a href="/">Home</a> | <a href="/services">Services</a> | <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/booking">Book Visit</a></nav></header>
 <main>
   <h1>Doctor of Physical Therapy Home Visit Services in Lahore</h1>
@@ -119,12 +92,9 @@ function generateRouteBodyHtml(route) {
     </ul>
     <a href="/booking">Book a DPT Home Visit Today</a>
   </section>
-</main>
-</div>`;
-  }
-
-  // Default rich fallback HTML for homepage and other routes
-  return `<div id="root">
+</main>`;
+  } else {
+    bodyContent = `
 <header><nav><a href="/">Universal Physio Care</a> | <a href="/services">Services</a> | <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/booking">Book Home Visit</a> | <a href="/blog">Blog</a></nav></header>
 <main>
   <section>
@@ -150,53 +120,27 @@ function generateRouteBodyHtml(route) {
     <p>Universal Physio Care - Gulberg III, Lahore, Punjab 54000, Pakistan | Phone: +92 306 4954970 | Email: info@universalphysio.fit</p>
     <p><a href="/llms.txt">View Machine-Readable LLMs Guide</a> | <a href="/sitemap.xml">View Site Map</a> | <a href="/agent-instructions.md">Agent Instructions</a></p>
   </section>
-</main>
-</div>`;
+</main>`;
+  }
+
+  return `<noscript>${bodyContent}\n  </noscript>`;
 }
 
-function startServer() {
-  return new Promise((resolve) => {
-    const server = http.createServer((req, res) => {
-      let filePath = path.join(distDir, req.url.split('?')[0]);
-      if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
-        filePath = path.join(filePath, 'index.html');
-      }
-      if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
-        filePath = path.join(distDir, 'index.html');
-      }
+function cleanHeadTags(html, r) {
+  html = html.replace(/<title>.*?<\/title>/gi, '');
+  html = html.replace('</head>', `  <title>${r.title}</title>\n</head>`);
 
-      const ext = path.extname(filePath);
-      const mimeTypes = {
-        '.html': 'text/html',
-        '.js': 'text/javascript',
-        '.css': 'text/css',
-        '.json': 'application/json',
-        '.png': 'image/png',
-        '.jpg': 'image/jpeg',
-        '.svg': 'image/svg+xml'
-      };
+  html = html.replace(/<meta name="description"[^>]*>/gi, '');
+  html = html.replace('</head>', `  <meta name="description" content="${r.description}">\n</head>`);
 
-      const contentType = mimeTypes[ext] || 'application/octet-stream';
-      fs.readFile(filePath, (err, content) => {
-        if (err) {
-          res.writeHead(500);
-          res.end('Server error');
-        } else {
-          res.writeHead(200, { 'Content-Type': contentType });
-          res.end(content, 'utf-8');
-        }
-      });
-    });
+  html = html.replace(/<link rel="canonical"[^>]*>/gi, '');
+  html = html.replace('</head>', `  <link rel="canonical" href="${r.canonical}">\n</head>`);
 
-    server.listen(PORT, () => {
-      console.log(`🚀 Static pre-render server running on http://localhost:${PORT}`);
-      resolve(server);
-    });
-  });
+  return html;
 }
 
-async function getRoutesToPrerender() {
-  const staticRoutes = [
+function getRoutesToPrerender() {
+  return [
     { path: '/', title: 'Home Physiotherapy in Lahore | Universal Physio Care', description: 'Book certified Doctor of Physical Therapy (DPT) home visit sessions in Lahore for back pain, stroke rehabilitation, sports injuries & elderly care.', canonical: 'https://www.universalphysio.fit/' },
     { path: '/services', title: 'Physiotherapy Services in Lahore | Universal Physio Care', description: 'Explore specialized in-home physiotherapy services in Lahore: back & neck pain relief, stroke rehabilitation, sports recovery & elderly care.', canonical: 'https://www.universalphysio.fit/services' },
     { path: '/services/back-and-neck-pain-physiotherapy', title: 'Back Pain Physiotherapy in Lahore | Universal Physio Care', description: 'Specialized home physiotherapy in Lahore for back & neck pain, sciatica, disc bulge & cervical stiffness. Book a Doctor of Physical Therapy visit.', canonical: 'https://www.universalphysio.fit/services/back-and-neck-pain-physiotherapy' },
@@ -222,52 +166,27 @@ async function getRoutesToPrerender() {
     { path: '/privacy', title: 'Privacy Policy | Universal Physio Care', description: 'Privacy Policy and patient data protection guidelines for Universal Physio Care in Lahore.', canonical: 'https://www.universalphysio.fit/privacy' },
     { path: '/terms-of-service', title: 'Terms of Service | Universal Physio Care', description: 'Terms of Service and treatment agreement guidelines for Universal Physio Care home visits in Lahore.', canonical: 'https://www.universalphysio.fit/terms-of-service' }
   ];
-
-  try {
-    const { data: blogs } = await supabase.from('blogs').select('slug, title, excerpt').order('created_at', { ascending: false });
-    if (blogs && blogs.length > 0) {
-      blogs.forEach(b => {
-        staticRoutes.push({
-          path: `/blog/${b.slug}`,
-          title: `${b.title} | Universal Physio Care Blog`,
-          description: b.excerpt || `Read ${b.title} on Universal Physio Care blog.`,
-          canonical: `https://www.universalphysio.fit/blog/${b.slug}`
-        });
-      });
-    }
-  } catch (err) {
-    console.warn('Note: Could not fetch dynamic blog posts for pre-rendering:', err.message);
-  }
-
-  return staticRoutes;
 }
 
-function runFallbackPrenderer(routes) {
-  console.log('⚡ Executing Fast HTML Route Generator Fallback...');
+function runPrenderer() {
+  if (!fs.existsSync(distDir)) {
+    console.error('Dist directory does not exist. Run vite build first.');
+    process.exit(1);
+  }
+
+  const routes = getRoutesToPrerender();
+  console.log('⚡ Generating static route HTML with noscript fallback & clean loading spinner...');
   const template = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
 
   routes.forEach(r => {
     let html = template;
-    html = html.replace(/<title>.*?<\/title>/gi, `<title>${r.title}</title>`);
+    html = cleanHeadTags(html, r);
 
-    const descTag = `<meta name="description" content="${r.description}">`;
-    if (html.includes('<meta name="description"')) {
-      html = html.replace(/<meta name="description"[^>]*>/gi, descTag);
+    const noscriptBlock = generateRouteNoscriptHtml(r);
+    if (html.includes('<noscript>')) {
+      html = html.replace(/<noscript>[\s\S]*?<\/noscript>/i, noscriptBlock);
     } else {
-      html = html.replace('</head>', `  ${descTag}\n</head>`);
-    }
-
-    const canonicalTag = `<link rel="canonical" href="${r.canonical}">`;
-    if (html.includes('<link rel="canonical"')) {
-      html = html.replace(/<link rel="canonical"[^>]*>/gi, canonicalTag);
-    } else {
-      html = html.replace('</head>', `  ${canonicalTag}\n</head>`);
-    }
-
-    // Replace #root content with rich pre-rendered route HTML
-    const routeHtml = generateRouteBodyHtml(r);
-    if (html.includes('<div id="root">')) {
-      html = html.replace(/<div id="root">[\s\S]*?<\/div>/i, routeHtml);
+      html = html.replace('</body>', `  ${noscriptBlock}\n</body>`);
     }
 
     if (r.path === '/') {
@@ -280,81 +199,13 @@ function runFallbackPrenderer(routes) {
       fs.writeFileSync(path.join(targetFolder, 'index.html'), html, 'utf8');
     }
   });
-  console.log('✅ Static pre-rendering completed via HTML route generator.');
+
+  console.log('✅ Static pre-rendering completed successfully.');
 }
 
-async function runPrenderer() {
-  if (!fs.existsSync(distDir)) {
-    console.error('Dist directory does not exist. Run vite build first.');
-    process.exit(1);
-  }
-
-  const routes = await getRoutesToPrerender();
-
-  if (process.env.VERCEL) {
-    runFallbackPrenderer(routes);
-    return;
-  }
-
-  let server;
-  let browser;
-
-  try {
-    const puppeteerModule = await import('puppeteer');
-    const puppeteer = puppeteerModule.default || puppeteerModule;
-
-    server = await startServer();
-    console.log(`Starting Puppeteer pre-rendering for ${routes.length} routes...`);
-
-    browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-
-    const page = await browser.newPage();
-
-    for (const r of routes) {
-      const targetUrl = `http://localhost:${PORT}${r.path}`;
-      console.log(`Rendering route: ${r.path} ...`);
-
-      await page.goto(targetUrl, { waitUntil: 'networkidle0', timeout: 30000 });
-
-      try {
-        await page.waitForSelector('#root > *', { timeout: 5000 });
-      } catch (e) {
-        console.warn(`Warning: Timeout waiting for #root child element on ${r.path}`);
-      }
-
-      let renderedHtml = await page.content();
-      renderedHtml = cleanHeadTags(renderedHtml, r);
-
-      if (r.path === '/') {
-        const destPath = path.join(distDir, 'index.html');
-        fs.writeFileSync(destPath, renderedHtml, 'utf8');
-        console.log(`✅ Saved pre-rendered HTML -> ${destPath}`);
-      } else {
-        const targetFolder = path.join(distDir, r.path.replace(/^\//, ''));
-        if (!fs.existsSync(targetFolder)) {
-          fs.mkdirSync(targetFolder, { recursive: true });
-        }
-        const destPath = path.join(targetFolder, 'index.html');
-        fs.writeFileSync(destPath, renderedHtml, 'utf8');
-        console.log(`✅ Saved pre-rendered HTML -> ${destPath}`);
-      }
-    }
-
-    await browser.close();
-    server.close();
-    console.log('🎉 Full Puppeteer DOM Pre-Rendering complete!');
-  } catch (err) {
-    console.warn('Puppeteer launch encountered environment restriction, switching to HTML route generator fallback:', err.message);
-    if (browser) await browser.close().catch(() => {});
-    if (server) server.close();
-    runFallbackPrenderer(routes);
-  }
-}
-
-runPrenderer().catch((err) => {
+try {
+  runPrenderer();
+} catch (err) {
   console.error('Pre-rendering error:', err);
   process.exit(1);
-});
+}
