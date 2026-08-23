@@ -86,6 +86,7 @@ function App() {
               <Route path="/areas-we-cover/iqbal-town-lahore" element={<IqbalTownLahore />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

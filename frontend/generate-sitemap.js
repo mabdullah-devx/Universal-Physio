@@ -33,6 +33,7 @@ async function generateSitemap() {
     '/areas-we-cover/iqbal-town-lahore',
     '/blog',
     '/privacy-policy',
+    '/privacy',
     '/terms-of-service'
   ];
 

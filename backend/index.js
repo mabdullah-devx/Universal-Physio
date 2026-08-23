@@ -1,4 +1,6 @@
 require('dotenv').config({ path: require('path').resolve(__dirname, '.env') });
+const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
@@ -313,10 +315,331 @@ app.post('/api/create-payment-intent', async (req, res) => {
   }
 });
 
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+// Valid frontend page routes registry
+const VALID_PAGE_ROUTES = new Set([
+  '/',
+  '/services',
+  '/services/back-and-neck-pain-physiotherapy',
+  '/services/stroke-rehabilitation-physiotherapy',
+  '/services/sports-injury-physiotherapy',
+  '/services/post-surgery-rehabilitation-physiotherapy',
+  '/services/elderly-care-physiotherapy',
+  '/booking',
+  '/booking-status',
+  '/about',
+  '/contact',
+  '/areas-we-cover',
+  '/areas-we-cover/dha-lahore',
+  '/areas-we-cover/gulberg-lahore',
+  '/areas-we-cover/johar-town-lahore',
+  '/areas-we-cover/model-town-lahore',
+  '/areas-we-cover/bahria-town-lahore',
+  '/areas-we-cover/valencia-lahore',
+  '/areas-we-cover/wapda-town-lahore',
+  '/areas-we-cover/faisal-town-lahore',
+  '/areas-we-cover/iqbal-town-lahore',
+  '/blog',
+  '/privacy',
+  '/privacy-policy',
+  '/terms-of-service',
+  '/admin',
+  '/agent-instructions',
+  '/agent-instructions.md',
+  '/llms.txt',
+  '/sitemap.xml',
+  '/sitemap_index.xml',
+  '/robots.txt'
+]);
+
+function isValidRoute(pathname) {
+  const cleanPath = pathname.split('?')[0].replace(/\/$/, '') || '/';
+  if (VALID_PAGE_ROUTES.has(cleanPath)) return true;
+  if (cleanPath.startsWith('/blog/')) return true;
+  return false;
+}
+
+function getMarkdownForRoute(cleanPath) {
+  if (cleanPath === '/' || cleanPath === '') {
+    return `# Universal Physio Care - In-Home Physical Therapy in Lahore
+
+> Premium In-Home Physical Therapy & Doctor of Physical Therapy (DPT) Home Visit Services in Lahore, Pakistan.
+
+## Contact & Direct Booking
+- **Website**: https://www.universalphysio.fit
+- **Phone**: +92 306 4954970
+- **Email**: info@universalphysio.fit
+- **Address**: Gulberg III, Lahore, Punjab 54000, Pakistan
+- **Online Booking**: https://www.universalphysio.fit/booking
+
+## When to Reach for Universal Physio Care
+1. **In-Home DPT Visits**: Qualified Doctor of Physical Therapy home sessions in DHA, Gulberg, Johar Town, Model Town, Bahria Town, Valencia, Wapda Town, Faisal Town, or Iqbal Town Lahore.
+2. **Back & Neck Pain**: Manual therapy, spinal mobilization, sciatica relief, and lumbar/cervical care.
+3. **Stroke Rehabilitation**: Neuro-physiotherapy home visits for gait restoration, balance training, and motor recovery.
+4. **Sports Injury Recovery**: Rehabilitation for sprains, muscle strains, ACL/MCL repairs, and joint pain.
+5. **Post-Surgical Rehab**: Recovery following total knee replacement (TKR), total hip replacement (THR), and spine surgery.
+6. **Elderly Mobility**: Balance training, arthritis management, and senior fall prevention.
+
+## Clinical Authority & Medical Accreditation
+- All sessions conducted by accredited Doctors of Physical Therapy (DPT).
+- Over 1,500+ patient sessions completed in Lahore with a 98% satisfaction score.
+
+## Machine-Readable Resources
+- [LLMs Guide](https://www.universalphysio.fit/llms.txt)
+- [Agent Instructions](https://www.universalphysio.fit/agent-instructions.md)
+- [Sitemap](https://www.universalphysio.fit/sitemap.xml)
+`;
+  }
+
+  if (cleanPath === '/services') {
+    return `# In-Home Physical Therapy Services in Lahore | Universal Physio Care
+
+Universal Physio Care delivers licensed Doctor of Physical Therapy (DPT) home visit sessions across Lahore, Pakistan.
+
+## Core Clinical Services
+- **Back & Neck Pain Therapy**: https://www.universalphysio.fit/services/back-and-neck-pain-physiotherapy
+- **Stroke Rehabilitation**: https://www.universalphysio.fit/services/stroke-rehabilitation-physiotherapy
+- **Sports Injury Recovery**: https://www.universalphysio.fit/services/sports-injury-physiotherapy
+- **Post-Surgical Rehabilitation**: https://www.universalphysio.fit/services/post-surgery-rehabilitation-physiotherapy
+- **Elderly Care & Fall Prevention**: https://www.universalphysio.fit/services/elderly-care-physiotherapy
+
+## Schedule an Appointment
+Book online at https://www.universalphysio.fit/booking or call +92 306 4954970.
+`;
+  }
+
+  if (cleanPath.startsWith('/services/back-and-neck-pain')) {
+    return `# Back & Neck Pain Home Physiotherapy in Lahore | Universal Physio Care
+
+Specialized home visit physical therapy in Lahore for lower back pain, neck stiffness, sciatica, disc bulge, and postural dysfunction.
+
+- **Treatments**: Spinal manual therapy, joint mobilization, core stabilization, nerve gliding exercises.
+- **Service Areas**: All Lahore residential sectors (DHA, Gulberg, Johar Town, Model Town, etc.).
+- **Book Visit**: https://www.universalphysio.fit/booking | Phone: +92 306 4954970
+`;
+  }
+
+  if (cleanPath.startsWith('/services/stroke-rehabilitation')) {
+    return `# Stroke Rehabilitation Home Physiotherapy in Lahore | Universal Physio Care
+
+Expert in-home neuro-physiotherapy for stroke survivors across Lahore.
+
+- **Clinical Focus**: Motor re-education, gait re-training, balance enhancement, upper limb functional rehab, daily living independence.
+- **Accreditation**: Certified Doctor of Physical Therapy (DPT) specialists.
+- **Book Visit**: https://www.universalphysio.fit/booking | Phone: +92 306 4954970
+`;
+  }
+
+  if (cleanPath.startsWith('/services/sports-injury')) {
+    return `# Sports Injury Home Physiotherapy in Lahore | Universal Physio Care
+
+Targeted home physical therapy for athletes and active individuals recovering from muscle strains, sprains, ligament tears (ACL/MCL), and joint dislocations.
+
+- **Book Visit**: https://www.universalphysio.fit/booking | Phone: +92 306 4954970
+`;
+  }
+
+  if (cleanPath.startsWith('/services/post-surgery')) {
+    return `# Post-Surgery Rehabilitation in Lahore | Universal Physio Care
+
+Safe, progressive in-home rehabilitation following Total Knee Replacement (TKR), Total Hip Replacement (THR), ACL reconstruction, and spinal procedures.
+
+- **Book Visit**: https://www.universalphysio.fit/booking | Phone: +92 306 4954970
+`;
+  }
+
+  if (cleanPath.startsWith('/services/elderly-care')) {
+    return `# Elderly Care & Fall Prevention Physiotherapy in Lahore | Universal Physio Care
+
+Gentle senior physical therapy delivered at home in Lahore. Focuses on arthritis management, joint mobility, balance restoration, and fall prevention.
+
+- **Book Visit**: https://www.universalphysio.fit/booking | Phone: +92 306 4954970
+`;
+  }
+
+  if (cleanPath === '/about') {
+    return `# About Universal Physio Care
+
+Universal Physio Care is Lahore's premier Doctor of Physical Therapy (DPT) home service provider, having completed over 1,500+ home rehab sessions with a 98% satisfaction rate.
+
+## Our Mission
+To deliver hospital-grade physical therapy in the safety, privacy, and comfort of patients' homes. Our certified DPT specialists create individualized care plans for spine health, neurological recovery, orthopedics, and senior mobility.
+
+## Contact Information
+- **Phone**: +92 306 4954970
+- **Email**: info@universalphysio.fit
+- **Address**: Gulberg III, Lahore, Punjab 54000, Pakistan
+- **Website**: https://www.universalphysio.fit
+`;
+  }
+
+  if (cleanPath === '/contact') {
+    return `# Contact Universal Physio Care
+
+Get in touch with Universal Physio Care to schedule a home physical therapy appointment in Lahore.
+
+- **Phone / WhatsApp**: +92 306 4954970
+- **Email**: info@universalphysio.fit
+- **Address**: Gulberg III, Lahore, Punjab 54000, Pakistan
+- **Hours**: Monday - Sunday, 8:00 AM - 9:00 PM PKT
+- **Online Booking Form**: https://www.universalphysio.fit/booking
+`;
+  }
+
+  if (cleanPath === '/privacy' || cleanPath === '/privacy-policy') {
+    return `# Privacy Policy | Universal Physio Care
+
+Universal Physio Care protects patient data and medical record confidentiality in Lahore, Pakistan.
+
+## Information Collection & Use
+We collect contact details and clinical details required for home physical therapy sessions. Information is used strictly for care coordination and never sold to third parties.
+
+## Contact
+Email: info@universalphysio.fit | Phone: +92 306 4954970
+`;
+  }
+
+  if (cleanPath === '/terms-of-service') {
+    return `# Terms of Service | Universal Physio Care
+
+Terms of Service and patient agreement for home physical therapy visits in Lahore by Universal Physio Care.
+`;
+  }
+
+  if (cleanPath === '/booking') {
+    return `# Book Home Physical Therapy Session in Lahore | Universal Physio Care
+
+Schedule a Doctor of Physical Therapy (DPT) home visit session in Lahore.
+
+- **Online Booking Form**: https://www.universalphysio.fit/booking
+- **API Booking Endpoint**: POST https://www.universalphysio.fit/api/bookings
+- **Direct Phone Booking**: +92 306 4954970
+`;
+  }
+
+  if (cleanPath.startsWith('/areas-we-cover')) {
+    return `# Home Physiotherapy Service Coverage in Lahore | Universal Physio Care
+
+Universal Physio Care provides Doctor of Physical Therapy (DPT) home visit services across all major sectors in Lahore, Pakistan:
+
+- DHA Lahore (Phases 1-13)
+- Gulberg (I, II, III)
+- Johar Town (Phase 1 & 2)
+- Model Town & Garden Town
+- Bahria Town Lahore
+- Valencia Town
+- Wapda Town
+- Faisal Town
+- Allama Iqbal Town
+
+Book your home visit at https://www.universalphysio.fit/booking or call +92 306 4954970.
+`;
+  }
+
+  if (cleanPath === '/blog' || cleanPath.startsWith('/blog/')) {
+    return `# Universal Physio Care Health & Recovery Blog
+
+Evidence-based physical therapy articles, spine care guides, stroke recovery tips, and wellness advice from Doctor of Physical Therapy specialists in Lahore.
+
+Visit https://www.universalphysio.fit/blog for latest articles.
+`;
+  }
+
+  return `# Universal Physio Care - ${cleanPath}
+
+For full information, visit https://www.universalphysio.fit or call +92 306 4954970.
+`;
+}
+
+// Global Vary header for content negotiation compliance
+app.use((req, res, next) => {
+  res.setHeader('Vary', 'Accept, Accept-Encoding');
+  next();
+});
+
+// Serve static frontend assets from dist directory
+const distPath = path.resolve(__dirname, '../frontend/dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath, { index: false, redirect: false }));
+}
+
+// Catch-all handler for page routes, content negotiation, & 404s
+app.use((req, res) => {
+  const acceptHeader = req.headers.accept || '';
+  const pathname = req.path || '/';
+  const cleanPath = pathname.replace(/\/$/, '') || '/';
+
+  // Check if route is valid
+  if (!isValidRoute(cleanPath)) {
+    // Return real HTTP 404
+    res.status(404);
+    res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+    res.setHeader('Vary', 'Accept, Accept-Encoding');
+    return res.send(`# 404 Not Found
+
+The requested resource \`${pathname}\` does not exist on Universal Physio Care.
+
+- **Sitemap**: https://www.universalphysio.fit/sitemap.xml
+- **LLMs Guide**: https://www.universalphysio.fit/llms.txt
+- **Agent Instructions**: https://www.universalphysio.fit/agent-instructions.md
+- **Homepage**: https://www.universalphysio.fit/
+`);
+  }
+
+  // If request accepts markdown (Accept: text/markdown)
+  if (acceptHeader.includes('text/markdown')) {
+    res.status(200);
+    res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+    res.setHeader('Vary', 'Accept, Accept-Encoding');
+    return res.send(getMarkdownForRoute(cleanPath));
+  }
+
+  // Handle static text files directly if requested
+  if (cleanPath === '/llms.txt' || cleanPath === '/agent-instructions.md' || cleanPath === '/robots.txt' || cleanPath === '/sitemap.xml' || cleanPath === '/sitemap_index.xml' || cleanPath === '/sitemap') {
+    let filename = cleanPath.replace(/^\//, '');
+    if (filename === 'sitemap') filename = 'sitemap.xml';
+    const publicFilePath = path.resolve(__dirname, '../frontend/public', filename);
+    const distFilePath = path.resolve(distPath, filename);
+    const targetFile = fs.existsSync(distFilePath) ? distFilePath : publicFilePath;
+    if (fs.existsSync(targetFile)) {
+      const mime = filename.endsWith('.xml') ? 'application/xml; charset=utf-8' : 'text/plain; charset=utf-8';
+      res.setHeader('Content-Type', mime);
+      res.setHeader('Vary', 'Accept, Accept-Encoding');
+      return res.send(fs.readFileSync(targetFile, 'utf8'));
+    }
+  }
+
+  // Otherwise serve pre-rendered HTML for valid page route
+  let targetHtmlFile = path.join(distPath, cleanPath.replace(/^\//, ''), 'index.html');
+  if (cleanPath === '/') {
+    targetHtmlFile = path.join(distPath, 'index.html');
+  }
+
+  if (fs.existsSync(targetHtmlFile)) {
+    res.status(200);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Vary', 'Accept, Accept-Encoding');
+    return res.sendFile(targetHtmlFile);
+  }
+
+  const fallbackHtml = path.join(distPath, 'index.html');
+  if (fs.existsSync(fallbackHtml)) {
+    res.status(200);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Vary', 'Accept, Accept-Encoding');
+    return res.sendFile(fallbackHtml);
+  }
+
+  res.status(200);
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Vary', 'Accept, Accept-Encoding');
+  res.send('<!doctype html><html><body><div id="root"><h1>Universal Physio Care</h1></div></body></html>');
+});
+
+if (require.main === module && (process.env.NODE_ENV !== 'production' || !process.env.VERCEL)) {
   app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
 }
 
 module.exports = app;
+
