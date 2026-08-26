@@ -339,7 +339,6 @@ const VALID_PAGE_ROUTES = new Set([
   '/areas-we-cover/faisal-town-lahore',
   '/areas-we-cover/iqbal-town-lahore',
   '/blog',
-  '/privacy',
   '/privacy-policy',
   '/terms-of-service',
   '/admin',
@@ -485,7 +484,7 @@ Get in touch with Universal Physio Care to schedule a home physical therapy appo
 `;
   }
 
-  if (cleanPath === '/privacy' || cleanPath === '/privacy-policy') {
+  if (cleanPath === '/privacy-policy') {
     return `# Privacy Policy | Universal Physio Care
 
 Universal Physio Care protects patient data and medical record confidentiality in Lahore, Pakistan.
@@ -554,6 +553,14 @@ For full information, visit https://www.universalphysio.fit or call +92 306 4954
 app.use((req, res, next) => {
   res.setHeader('Vary', 'Accept, Accept-Encoding');
   next();
+});
+
+// /privacy is a legacy duplicate of /privacy-policy. Vercel also handles this
+// via a redirect in vercel.json; this keeps `npm run dev` and any request that
+// does reach the function behaving the same way. Registered before the static
+// handler so a stale dist/privacy/ build artifact can never shadow it.
+app.get('/privacy', (req, res) => {
+  res.redirect(301, '/privacy-policy');
 });
 
 // Serve static frontend assets from dist directory

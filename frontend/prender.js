@@ -1,7 +1,34 @@
 import fs from 'fs';
 import path from 'path';
+import { createClient } from '@supabase/supabase-js';
 
 const distDir = './dist';
+
+const SITE_ORIGIN = 'https://www.universalphysio.fit';
+
+const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://fadmrbtnmfrvvmwnycth.supabase.co';
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhZG1yYnRubWZydnZtd255Y3RoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNTk1MDIsImV4cCI6MjA5MzYzNTUwMn0.Ck-UsOBpoeHCmDAMmq49L-4Yey4iBW-yG-bxjuc7poM';
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Escape values injected into HTML attributes (content="...", href="...").
+// A blog title containing a double quote or `&` would otherwise break the tag.
+function escapeHtmlAttr(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Escape values injected as HTML text content.
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
 
 function generateRouteNoscriptHtml(route) {
   const p = route.path;
@@ -50,9 +77,9 @@ function generateRouteNoscriptHtml(route) {
     <a href="/booking">Schedule an Appointment Online</a>
   </section>
 </main>`;
-  } else if (p === '/privacy-policy' || p === '/privacy') {
+  } else if (p === '/privacy-policy') {
     bodyContent = `
-<header><nav><a href="/">Home</a> | <a href="/services">Services</a> | <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/privacy">Privacy Policy</a></nav></header>
+<header><nav><a href="/">Home</a> | <a href="/services">Services</a> | <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/privacy-policy">Privacy Policy</a></nav></header>
 <main>
   <h1>Privacy Policy - Universal Physio Care</h1>
   <p>Universal Physio Care ("we", "our", or "us") is dedicated to safeguarding the personal privacy, medical data confidentiality, and security of our patients and site visitors in Lahore, Pakistan. This Privacy Policy details how we collect, use, store, and protect your information when you access our website at https://www.universalphysio.fit or schedule home physical therapy services with our Doctor of Physical Therapy (DPT) team.</p>
@@ -127,14 +154,29 @@ function generateRouteNoscriptHtml(route) {
 }
 
 function cleanHeadTags(html, r) {
+  const title = escapeHtmlAttr(r.title);
+  const description = escapeHtmlAttr(r.description);
+  const canonical = escapeHtmlAttr(r.canonical);
+
   html = html.replace(/<title>.*?<\/title>/gi, '');
-  html = html.replace('</head>', `  <title>${r.title}</title>\n</head>`);
+  html = html.replace('</head>', `  <title>${escapeHtml(r.title)}</title>\n</head>`);
 
   html = html.replace(/<meta name="description"[^>]*>/gi, '');
-  html = html.replace('</head>', `  <meta name="description" content="${r.description}">\n</head>`);
+  html = html.replace('</head>', `  <meta name="description" content="${description}">\n</head>`);
 
   html = html.replace(/<link rel="canonical"[^>]*>/gi, '');
-  html = html.replace('</head>', `  <link rel="canonical" href="${r.canonical}">\n</head>`);
+  html = html.replace('</head>', `  <link rel="canonical" href="${canonical}">\n</head>`);
+
+  // Keep the social tags consistent with the canonical, otherwise every
+  // prerendered page inherits the homepage's og:url/title/description.
+  html = html.replace(/<meta property="og:(?:title|description|url)"[^>]*>/gi, '');
+  html = html.replace(/<meta name="twitter:(?:title|description)"[^>]*>/gi, '');
+  html = html.replace('</head>', `  <meta property="og:title" content="${title}">
+  <meta property="og:description" content="${description}">
+  <meta property="og:url" content="${canonical}">
+  <meta name="twitter:title" content="${title}">
+  <meta name="twitter:description" content="${description}">
+</head>`);
 
   return html;
 }
@@ -163,12 +205,85 @@ function getRoutesToPrerender() {
     { path: '/areas-we-cover/iqbal-town-lahore', title: 'Home Physiotherapy in Iqbal Town Lahore | Universal Physio Care', description: 'Professional home visit physical therapy in Allama Iqbal Town Lahore across Khyaban-e-Iqbal, Chenab, Moon Market & surrounding blocks.', canonical: 'https://www.universalphysio.fit/areas-we-cover/iqbal-town-lahore' },
     { path: '/blog', title: 'Physiotherapy & Health Recovery Blog | Universal Physio Care', description: 'Evidence-based physical therapy insights, spine health advice, stroke recovery exercises, and wellness guides from certified DPT specialists in Lahore.', canonical: 'https://www.universalphysio.fit/blog' },
     { path: '/privacy-policy', title: 'Privacy Policy | Universal Physio Care', description: 'Privacy Policy and patient data protection guidelines for Universal Physio Care in Lahore.', canonical: 'https://www.universalphysio.fit/privacy-policy' },
-    { path: '/privacy', title: 'Privacy Policy | Universal Physio Care', description: 'Privacy Policy and patient data protection guidelines for Universal Physio Care in Lahore.', canonical: 'https://www.universalphysio.fit/privacy' },
     { path: '/terms-of-service', title: 'Terms of Service | Universal Physio Care', description: 'Terms of Service and treatment agreement guidelines for Universal Physio Care home visits in Lahore.', canonical: 'https://www.universalphysio.fit/terms-of-service' }
   ];
 }
 
-function runPrenderer() {
+// Blog posts are listed in the sitemap but were not prerendered, so they used
+// to serve dist/index.html verbatim - homepage <title> and a canonical
+// pointing at "/". Helmet fixed that client-side only.
+async function getBlogRoutesToPrerender() {
+  try {
+    const { data: blogs, error } = await supabase
+      .from('blogs')
+      .select('slug, title, excerpt, created_at')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    if (!blogs || blogs.length === 0) {
+      console.warn('⚠️  WARNING: Supabase returned 0 blog posts - no blog pages will be prerendered.');
+      return [];
+    }
+
+    return blogs
+      .filter(b => b.slug)
+      .map(b => ({
+        path: `/blog/${b.slug}`,
+        // Matches the title BlogPost.jsx sets client-side, so the raw and
+        // hydrated documents agree.
+        title: `${b.title} | Universal Physio Blog`,
+        description: b.excerpt || 'Evidence-based physiotherapy insights from certified Doctor of Physical Therapy specialists in Lahore.',
+        canonical: `${SITE_ORIGIN}/blog/${b.slug}`,
+        blog: b
+      }));
+  } catch (err) {
+    console.warn('⚠️  WARNING: Unable to fetch blog posts from Supabase - no blog pages will be prerendered.');
+    console.warn(`   Reason: ${err.message}`);
+    return [];
+  }
+}
+
+function generateBlogNoscriptHtml(route) {
+  const { blog } = route;
+  return `<noscript>
+<header><nav><a href="/">Home</a> | <a href="/services">Services</a> | <a href="/blog">Blog</a> | <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/booking">Book Visit</a></nav></header>
+<main>
+  <article>
+    <h1>${escapeHtml(blog.title)}</h1>
+    <p>${escapeHtml(blog.excerpt || '')}</p>
+    <p>Read the full article at <a href="${escapeHtmlAttr(route.canonical)}">${escapeHtml(route.canonical)}</a>.</p>
+  </article>
+  <section>
+    <h2>More from Universal Physio Care</h2>
+    <p>Browse all articles at <a href="/blog">our physiotherapy blog</a>, or <a href="/booking">book a Doctor of Physical Therapy home visit in Lahore</a>.</p>
+    <p>Universal Physio Care - Gulberg III, Lahore, Punjab 54000, Pakistan | Phone: +92 306 4954970</p>
+  </section>
+</main>
+  </noscript>`;
+}
+
+function writeRouteHtml(template, route, noscriptBlock) {
+  let html = cleanHeadTags(template, route);
+
+  if (html.includes('<noscript>')) {
+    html = html.replace(/<noscript>[\s\S]*?<\/noscript>/i, noscriptBlock);
+  } else {
+    html = html.replace('</body>', `  ${noscriptBlock}\n</body>`);
+  }
+
+  if (route.path === '/') {
+    fs.writeFileSync(path.join(distDir, 'index.html'), html, 'utf8');
+    return;
+  }
+
+  const targetFolder = path.join(distDir, route.path.replace(/^\//, ''));
+  if (!fs.existsSync(targetFolder)) {
+    fs.mkdirSync(targetFolder, { recursive: true });
+  }
+  fs.writeFileSync(path.join(targetFolder, 'index.html'), html, 'utf8');
+}
+
+async function runPrenderer() {
   if (!fs.existsSync(distDir)) {
     console.error('Dist directory does not exist. Run vite build first.');
     process.exit(1);
@@ -179,33 +294,18 @@ function runPrenderer() {
   const template = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
 
   routes.forEach(r => {
-    let html = template;
-    html = cleanHeadTags(html, r);
-
-    const noscriptBlock = generateRouteNoscriptHtml(r);
-    if (html.includes('<noscript>')) {
-      html = html.replace(/<noscript>[\s\S]*?<\/noscript>/i, noscriptBlock);
-    } else {
-      html = html.replace('</body>', `  ${noscriptBlock}\n</body>`);
-    }
-
-    if (r.path === '/') {
-      fs.writeFileSync(path.join(distDir, 'index.html'), html, 'utf8');
-    } else {
-      const targetFolder = path.join(distDir, r.path.replace(/^\//, ''));
-      if (!fs.existsSync(targetFolder)) {
-        fs.mkdirSync(targetFolder, { recursive: true });
-      }
-      fs.writeFileSync(path.join(targetFolder, 'index.html'), html, 'utf8');
-    }
+    writeRouteHtml(template, r, generateRouteNoscriptHtml(r));
   });
 
-  console.log('✅ Static pre-rendering completed successfully.');
+  const blogRoutes = await getBlogRoutesToPrerender();
+  blogRoutes.forEach(r => {
+    writeRouteHtml(template, r, generateBlogNoscriptHtml(r));
+  });
+
+  console.log(`✅ Static pre-rendering completed (${routes.length} static + ${blogRoutes.length} blog pages).`);
 }
 
-try {
-  runPrenderer();
-} catch (err) {
+runPrenderer().catch(err => {
   console.error('Pre-rendering error:', err);
   process.exit(1);
-}
+});
