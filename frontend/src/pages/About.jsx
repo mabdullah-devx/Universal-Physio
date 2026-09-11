@@ -103,8 +103,8 @@ const About = () => {
   return (
     <div className="w-full pt-28 pb-24 bg-[#FDFBF9]">
       <SEO 
-        title="About Universal Physio | Physiotherapy Care in Lahore" 
-        description="Learn about Universal Physio Care, Lahore's Doctor of Physical Therapy home service. DPT specialists providing evidence-based in-home rehabilitation."
+        title="About Universal Physio Care | DPT Specialists in Lahore" 
+        description="Meet Lahore's trusted Doctor of Physical Therapy team. Certified DPT specialists delivering evidence-based in-home physiotherapy. Learn about our care."
         path="/about"
         schema={aboutSchema}
       />

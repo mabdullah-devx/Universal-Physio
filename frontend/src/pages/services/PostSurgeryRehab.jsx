@@ -48,8 +48,8 @@ const PostSurgeryRehab = () => {
   return (
     <div className="w-full pt-32 pb-24 bg-[#FDFBF9]">
       <SEO 
-        title="Post-Surgery Rehabilitation in Lahore | Universal Physio" 
-        description="In-home post-surgery physiotherapy in Lahore for ACL repairs, joint replacements, and spinal surgery recovery. Safe, progressive mobility."
+        title="Post-Surgery Rehabilitation in Lahore | In-Home Care" 
+        description="In-home post-surgery physiotherapy in Lahore for ACL repairs, joint replacements, and spinal surgery recovery. Safe mobility. Schedule your visit today."
         path="/services/post-surgery-rehabilitation-physiotherapy"
         schema={[serviceSchema, faqSchema]}
         breadcrumbs={[

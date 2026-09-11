@@ -48,8 +48,8 @@ const ElderlyCare = () => {
   return (
     <div className="w-full pt-32 pb-24 bg-[#FDFBF9]">
       <SEO 
-        title="Elderly Care Physiotherapy in Lahore | Universal Physio" 
-        description="Gentle home physical therapy in Lahore for seniors. Fall prevention, arthritis management, and joint mobility enhancement by Doctors of Physical Therapy (DPT)."
+        title="Elderly Care Physiotherapy in Lahore | Senior Mobility" 
+        description="Gentle home physical therapy in Lahore for seniors. Fall prevention, arthritis management, and balance enhancement by certified DPTs. Book online today."
         path="/services/elderly-care-physiotherapy"
         schema={[serviceSchema, faqSchema]}
         breadcrumbs={[

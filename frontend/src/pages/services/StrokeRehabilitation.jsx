@@ -52,8 +52,8 @@ const StrokeRehabilitation = () => {
   return (
     <div className="w-full pt-32 pb-24 bg-[#FDFBF9]">
       <SEO 
-        title="Stroke Rehabilitation Physiotherapy in Lahore | Universal Physio" 
-        description="In-home stroke rehabilitation services in Lahore. Neuro-physiotherapy to restore gait, balance, arm mobility & independence for stroke survivors."
+        title="Stroke Rehabilitation Physiotherapy in Lahore | In-Home" 
+        description="Rebuild motor function and walking ability with specialized stroke neuro-physiotherapy at home in Lahore. Certified DPT care. Book your visit today."
         path="/services/stroke-rehabilitation-physiotherapy"
         schema={[serviceSchema, faqSchema]}
         breadcrumbs={[

@@ -52,8 +52,8 @@ const BackAndNeckPain = () => {
   return (
     <div className="w-full pt-32 pb-24 bg-[#FDFBF9]">
       <SEO 
-        title="Back Pain Physiotherapy in Lahore | Universal Physio" 
-        description="Specialized home physiotherapy in Lahore for back & neck pain, sciatica, disc bulge & cervical stiffness. Book a Doctor of Physical Therapy visit."
+        title="Back Pain Physiotherapy in Lahore | In-Home Care" 
+        description="Relieve spinal stiffness and sciatica fast. Certified DPT doctors provide targeted back pain physiotherapy at home in Lahore. Book online today."
         path="/services/back-and-neck-pain-physiotherapy"
         schema={[serviceSchema, faqSchema]}
         breadcrumbs={[

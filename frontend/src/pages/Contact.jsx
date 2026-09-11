@@ -75,14 +75,14 @@ const Contact = () => {
   return (
     <div className="w-full pt-32 pb-20 px-6 max-w-7xl mx-auto">
       <SEO 
-        title="Contact Universal Physio | Book Physiotherapy in Lahore" 
-        description="Contact Universal Physio Care in Lahore. Schedule your Doctor of Physical Therapy (DPT) home visit, call +92 3064954970 or message our support team."
+        title="Contact Universal Physio Care | Home Visits in Lahore" 
+        description="Contact Universal Physio Care in Lahore. Schedule your Doctor of Physical Therapy home visit, call +92 306 4954970 or message us on WhatsApp today."
         path="/contact"
         schema={contactSchema}
       />
       <div className="text-center mb-16">
         <h1 className="text-5xl md:text-6xl font-serif font-bold mb-4">Get in Touch</h1>
-        <p className="text-xl text-muted-foreground">We're here to answer any questions about our services.</p>
+        <p className="text-xl text-muted-foreground">We're here to answer any questions about our in-home physical therapy services in Lahore.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -93,20 +93,25 @@ const Contact = () => {
             <div className="flex items-start gap-4">
               <div className="mt-1 text-primary"><MapPin size={24} /></div>
               <div>
-                <p className="text-muted-foreground">Lahore<br />Punjab, Pakistan</p>
+                <p className="text-muted-foreground font-medium text-foreground">Gulberg III</p>
+                <p className="text-muted-foreground">Lahore, Punjab 54000, Pakistan</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-primary"><Phone size={24} /></div>
               <div>
-                <p className="text-muted-foreground">+92 3064954970</p>
+                <a href="tel:+923064954970" className="text-muted-foreground hover:text-primary transition-colors font-medium">
+                  +92 306 4954970
+                </a>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-primary"><Mail size={24} /></div>
               <div>
                 <h3 className="font-bold">Email</h3>
-                <p className="text-muted-foreground">info@universalphysio.fit</p>
+                <a href="mailto:info@universalphysio.fit" className="text-muted-foreground hover:text-primary transition-colors">
+                  info@universalphysio.fit
+                </a>
               </div>
             </div>
           </div>

@@ -86,8 +86,8 @@ const AreasWeCover = () => {
   return (
     <div className="w-full bg-[#FEFEFA] overflow-hidden">
       <SEO 
-        title="Home Physiotherapy Service Areas in Lahore | Universal Physio" 
-        description="Discover Universal Physio Care home visit coverage across Lahore: DHA, Gulberg, Johar Town, Model Town, Bahria Town, Valencia & surrounding sectors."
+        title="Physiotherapy Service Areas in Lahore | In-Home Coverage" 
+        description="Discover Doctor of Physical Therapy home visit coverage across Lahore: DHA, Gulberg, Johar Town, Model Town & Bahria Town. Book your session today."
         path="/areas-we-cover"
         schema={areasHubSchema}
       />

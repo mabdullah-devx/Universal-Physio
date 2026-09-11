@@ -123,8 +123,6 @@ async function generateSitemap() {
     return `  <url>
     <loc>${escapeXml(loc)}</loc>
     <lastmod>${PAGE_LASTMOD[route]}</lastmod>
-    <changefreq>${isHome ? 'daily' : 'weekly'}</changefreq>
-    <priority>${isHome ? '1.0' : '0.8'}</priority>
   </url>`;
   });
 
@@ -140,9 +138,7 @@ async function generateSitemap() {
     }
     return `  <url>
     <loc>${escapeXml(`${SITE_ORIGIN}${item.url}`)}</loc>
-    <lastmod>${item.lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>${imageBlock}
+    <lastmod>${item.lastmod}</lastmod>${imageBlock}
   </url>`;
   });
 

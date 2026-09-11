@@ -48,8 +48,8 @@ const SportsInjury = () => {
   return (
     <div className="w-full pt-32 pb-24 bg-[#FDFBF9]">
       <SEO 
-        title="Sports Injury Physiotherapy in Lahore | Universal Physio" 
-        description="Targeted home sports injury physiotherapy in Lahore for sprains, strains, ligament recovery & joint rehab. Book a DPT specialist."
+        title="Sports Injury Physiotherapy in Lahore | In-Home Rehab" 
+        description="Targeted home sports injury physiotherapy in Lahore for sprains, muscle strains, ACL recovery & joint rehab. Book a certified DPT specialist today."
         path="/services/sports-injury-physiotherapy"
         schema={[serviceSchema, faqSchema]}
         breadcrumbs={[

@@ -170,8 +170,8 @@ const Booking = () => {
   return (
     <div className="w-full pt-32 pb-32 px-6 bg-[#FDFCFB]">
       <SEO 
-        title="Book Home Physiotherapy Session in Lahore | Universal Physio" 
-        description="Schedule your home physical therapy appointment in Lahore. Select your preferred date, time, service area (DHA, Gulberg, Johar Town, etc.) and DPT treatment."
+        title="Book Physiotherapist Home Visit in Lahore | Universal Physio" 
+        description="Schedule your certified Doctor of Physical Therapy home visit in Lahore in under 60 seconds. Flexible morning & evening slots. Reserve your session now."
         path="/booking"
       />
       <div className="max-w-5xl mx-auto">

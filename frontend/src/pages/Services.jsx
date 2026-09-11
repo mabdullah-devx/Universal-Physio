@@ -103,8 +103,8 @@ const Services = () => {
   return (
     <div className="w-full pt-32 pb-20">
       <SEO 
-        title="Physiotherapy Services in Lahore | Universal Physio" 
-        description="Explore specialized in-home physiotherapy services in Lahore: back & neck pain relief, stroke rehabilitation, sports recovery & elderly care."
+        title="Physiotherapy Services in Lahore | In-Home Rehabilitation" 
+        description="Explore specialized in-home physiotherapy services in Lahore: back & neck pain relief, stroke rehabilitation, sports recovery & elderly care. Book today."
         path="/services"
         schema={servicesHubSchema}
       />
