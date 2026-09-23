@@ -8,78 +8,15 @@ import {
 import { SERVICE_AREAS } from '../config/site';
 
 const AREA_METADATA = {
-  "DHA": {
-    title: 'DHA Lahore',
-    slug: 'dha-lahore',
-    desc: 'All phases (1-13) covered with immediate Doctor of Physical Therapy availability.',
-    icon: <Building2 size={24} />,
-    color: 'bg-blue-50',
-    img: '/area-premium-1.png'
-  },
-  "Gulberg": {
-    title: 'Gulberg Lahore',
-    slug: 'gulberg-lahore',
-    desc: 'Full coverage for Gulberg I, II, III & Main Boulevard residences.',
-    icon: <Building size={24} />,
-    color: 'bg-purple-50',
-    img: '/area-premium-2.png'
-  },
-  "Johar Town": {
-    title: 'Johar Town',
-    slug: 'johar-town-lahore',
-    desc: 'Fast response home visits for Phase 1, Phase 2, and doctors hospital vicinity.',
-    icon: <Home size={24} />,
-    color: 'bg-orange-50',
-    img: '/area-modern.png'
-  },
-  "Model Town": {
-    title: 'Model Town',
-    slug: 'model-town-lahore',
-    desc: 'Full coverage for blocks A through S with local DPT specialists.',
-    icon: <Building size={24} />,
-    color: 'bg-emerald-50',
-    img: '/area-premium-2.png'
-  },
-  "Bahria Town": {
-    title: 'Bahria Town',
-    slug: 'bahria-town-lahore',
-    desc: 'Premium home-visit services for all sectors (A through F).',
-    icon: <Map size={24} />,
-    color: 'bg-rose-50',
-    img: '/area-bahria.png'
-  },
-  "Valencia": {
-    title: 'Valencia',
-    slug: 'valencia-lahore',
-    desc: 'Comprehensive home physical therapy care for all blocks and sectors.',
-    icon: <Trees size={24} />,
-    color: 'bg-cyan-50',
-    img: '/area-premium-2.png'
-  },
-  "Wapda Town": {
-    title: 'Wapda Town',
-    slug: 'wapda-town-lahore',
-    desc: 'Dedicated therapists available for all extensions and blocks.',
-    icon: <Zap size={24} />,
-    color: 'bg-yellow-50',
-    img: '/area-modern.png'
-  },
-  "Faisal Town": {
-    title: 'Faisal Town',
-    slug: 'faisal-town-lahore',
-    desc: 'Quick-response rehabilitation for the entire residential community.',
-    icon: <LayoutGrid size={24} />,
-    color: 'bg-pink-50',
-    img: '/area-premium-2.png'
-  },
-  "Iqbal Town": {
-    title: 'Iqbal Town',
-    slug: 'iqbal-town-lahore',
-    desc: 'All residential blocks covered by our mobile Doctor of Physical Therapy team.',
-    icon: <Star size={24} />,
-    color: 'bg-indigo-50',
-    img: '/area-modern.png'
-  }
+  "DHA":        { title: 'DHA Lahore',    slug: 'dha-lahore',          desc: 'All phases (1-13) covered with immediate Doctor of Physical Therapy availability.',           Icon: Building2,   color: 'bg-blue-50',    img: '/area-premium-1.png' },
+  "Gulberg":    { title: 'Gulberg Lahore', slug: 'gulberg-lahore',       desc: 'Full coverage for Gulberg I, II, III & Main Boulevard residences.',                          Icon: Building,    color: 'bg-purple-50',  img: '/area-premium-2.png' },
+  "Johar Town": { title: 'Johar Town',    slug: 'johar-town-lahore',   desc: 'Fast response home visits for Phase 1, Phase 2, and doctors hospital vicinity.',           Icon: Home,        color: 'bg-orange-50',  img: '/area-modern.png'   },
+  "Model Town": { title: 'Model Town',    slug: 'model-town-lahore',   desc: 'Full coverage for blocks A through S with local DPT specialists.',                          Icon: Building,    color: 'bg-emerald-50', img: '/area-premium-2.png' },
+  "Bahria Town":{ title: 'Bahria Town',   slug: 'bahria-town-lahore',  desc: 'Premium home-visit services for all sectors (A through F).',                               Icon: Map,         color: 'bg-rose-50',    img: '/area-bahria.png'   },
+  "Valencia":   { title: 'Valencia',      slug: 'valencia-lahore',     desc: 'Comprehensive home physical therapy care for all blocks and sectors.',                      Icon: Trees,       color: 'bg-cyan-50',    img: '/area-premium-2.png' },
+  "Wapda Town": { title: 'Wapda Town',    slug: 'wapda-town-lahore',   desc: 'Dedicated therapists available for all extensions and blocks.',                             Icon: Zap,         color: 'bg-yellow-50',  img: '/area-modern.png'   },
+  "Faisal Town":{ title: 'Faisal Town',   slug: 'faisal-town-lahore',  desc: 'Quick-response rehabilitation for the entire residential community.',                       Icon: LayoutGrid,  color: 'bg-pink-50',    img: '/area-premium-2.png' },
+  "Iqbal Town": { title: 'Iqbal Town',    slug: 'iqbal-town-lahore',   desc: 'All residential blocks covered by our mobile Doctor of Physical Therapy team.',             Icon: Star,        color: 'bg-indigo-50',  img: '/area-modern.png'   },
 };
 
 const areasHubSchema = {
@@ -212,7 +149,7 @@ const AreasWeCover = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   <div className={`absolute bottom-4 left-4 h-12 w-12 rounded-2xl ${area.color} flex items-center justify-center shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
-                    {React.cloneElement(area.icon, { className: 'text-foreground/70 group-hover:text-primary transition-colors', size: 20 })}
+                    <area.Icon size={20} className="text-foreground/70 group-hover:text-primary transition-colors" />
                   </div>
                 </Link>
 
