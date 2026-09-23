@@ -98,7 +98,7 @@ const Home = () => {
   return (
     <div className="w-full">
       <SEO 
-        title="Physiotherapy in Lahore | Doctor of Physical Therapy Home Visits | Universal Physio Care" 
+        title="Home Physiotherapy in Lahore | DPT Specialists | Universal Physio" 
         description="Restore mobility fast with certified Doctor of Physical Therapy home visits across Lahore. Relief for stroke, spine & joint pain. Book your session now."
         path="/"
         schema={homeSchemas}

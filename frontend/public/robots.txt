@@ -34,4 +34,9 @@ Allow: /
 Disallow: /admin
 Disallow: /booking-status
 
+User-agent: Bytespider
+Allow: /
+Disallow: /admin
+Disallow: /booking-status
+
 Sitemap: https://www.universalphysio.fit/sitemap.xml

@@ -12,7 +12,7 @@ const defaultOrgSchema = {
   "legalName": "Universal Physio Care",
   "alternateName": ["Universal Physio", "Universal Physio Care Lahore", "Universal Physiotherapy Care"],
   "url": "https://www.universalphysio.fit",
-  "logo": "https://www.universalphysio.fit/Physiotherapy Clinic Logo.svg",
+  "logo": "https://www.universalphysio.fit/Physiotherapy%20Clinic%20Logo.svg",
   "image": "https://www.universalphysio.fit/hero-bg.png",
   "description": "Universal Physio Care provides certified Doctor of Physical Therapy (DPT) home visit sessions in Lahore for back pain, stroke rehabilitation, sports injuries, post-surgery rehab, and elderly care.",
   "telephone": "+923064954970",
@@ -25,6 +25,13 @@ const defaultOrgSchema = {
     "postalCode": "54000",
     "addressCountry": "PK"
   },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "08:00",
+    "closes": "21:00"
+  },
+  "priceRange": "₨₨",
   "contactPoint": [
     {
       "@type": "ContactPoint",
@@ -36,7 +43,8 @@ const defaultOrgSchema = {
     }
   ],
   "sameAs": [
-    "https://www.universalphysio.fit"
+    "https://www.universalphysio.fit",
+    "https://wa.me/923064954970"
   ]
 };
 

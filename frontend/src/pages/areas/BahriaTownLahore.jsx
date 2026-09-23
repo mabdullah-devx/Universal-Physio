@@ -50,7 +50,7 @@ const BahriaTownLahore = () => {
     <div className="w-full pt-32 pb-24 bg-[#FDFBF9]">
       <SEO 
         title="Home Physiotherapy in Bahria Town Lahore | Universal Physio" 
-        description="Home visit physical therapy in Bahria Town Lahore (Sectors A-F). Professional rehabilitation delivered to your residence."
+        description="Doctor of Physical Therapy home visits across all Bahria Town Lahore sectors (A–F). Back pain, stroke recovery & post-surgery rehab. Book your visit today ✓"
         path="/areas-we-cover/bahria-town-lahore"
         schema={[areaSchema, faqSchema]}
         breadcrumbs={[
