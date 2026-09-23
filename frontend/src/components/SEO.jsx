@@ -44,7 +44,8 @@ const defaultOrgSchema = {
   ],
   "sameAs": [
     "https://www.universalphysio.fit",
-    "https://wa.me/923064954970"
+    "https://wa.me/923064954970",
+    "https://share.google/9bhzxWDUXWKGgHnrV"
   ]
 };
 
