@@ -1,5 +1,5 @@
 import SEO from '../components/SEO';
-import React from 'react';
+
 import { ScrollText, CheckCircle2, AlertCircle, Calendar, User, CreditCard, ShieldCheck, HelpCircle, Scale, Globe, Bell, Phone, Mail } from 'lucide-react';
 
 const TermsOfService = () => {

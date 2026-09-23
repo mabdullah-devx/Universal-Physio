@@ -139,7 +139,6 @@ const SEO = ({
       {/* Standard metadata tags */}
       <title>{pageTitle}</title>
       <meta name="description" content={description} />
-      <meta name="keywords" content="Universal Physio Care, Universal Physio, Physiotherapy Lahore, Home Visit Physiotherapist Lahore, DPT Doctor Lahore, Back Pain Physiotherapy Lahore, Stroke Rehabilitation Lahore" />
       {noindex && <meta name="robots" content="noindex, nofollow" />}
       
       {/* Open Graph tags */}

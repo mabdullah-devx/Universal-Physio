@@ -380,7 +380,7 @@ function getMarkdownForRoute(cleanPath) {
 
 ## Clinical Authority & Medical Accreditation
 - All sessions conducted by accredited Doctors of Physical Therapy (DPT).
-- Over 1,500+ patient sessions completed in Lahore with a 98% satisfaction score.
+- Over 500+ patient sessions completed in Lahore with a 98% satisfaction score.
 
 ## Machine-Readable Resources
 - [LLMs Guide](https://www.universalphysio.fit/llms.txt)
@@ -458,7 +458,7 @@ Gentle senior physical therapy delivered at home in Lahore. Focuses on arthritis
   if (cleanPath === '/about') {
     return `# About Universal Physio Care
 
-Universal Physio Care is Lahore's premier Doctor of Physical Therapy (DPT) home service provider, having completed over 1,500+ home rehab sessions with a 98% satisfaction rate.
+Universal Physio Care is Lahore's premier Doctor of Physical Therapy (DPT) home service provider, having completed over 500+ home rehab sessions with a 98% satisfaction rate.
 
 ## Our Mission
 To deliver hospital-grade physical therapy in the safety, privacy, and comfort of patients' homes. Our certified DPT specialists create individualized care plans for spine health, neurological recovery, orthopedics, and senior mobility.

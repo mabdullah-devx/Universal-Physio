@@ -1,87 +1,108 @@
 import SEO from '../components/SEO';
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Building2, Trees, Home, Building, Zap,
   LayoutGrid, Star, Map, Plus, ArrowRight,
   CheckCircle2, Navigation, HeartPulse, ShieldCheck
 } from 'lucide-react';
+import { SERVICE_AREAS } from '../config/site';
+
+const AREA_METADATA = {
+  "DHA": {
+    title: 'DHA Lahore',
+    slug: 'dha-lahore',
+    desc: 'All phases (1-13) covered with immediate Doctor of Physical Therapy availability.',
+    icon: <Building2 size={24} />,
+    color: 'bg-blue-50',
+    img: '/area-premium-1.png'
+  },
+  "Gulberg": {
+    title: 'Gulberg Lahore',
+    slug: 'gulberg-lahore',
+    desc: 'Full coverage for Gulberg I, II, III & Main Boulevard residences.',
+    icon: <Building size={24} />,
+    color: 'bg-purple-50',
+    img: '/area-premium-2.png'
+  },
+  "Johar Town": {
+    title: 'Johar Town',
+    slug: 'johar-town-lahore',
+    desc: 'Fast response home visits for Phase 1, Phase 2, and doctors hospital vicinity.',
+    icon: <Home size={24} />,
+    color: 'bg-orange-50',
+    img: '/area-modern.png'
+  },
+  "Model Town": {
+    title: 'Model Town',
+    slug: 'model-town-lahore',
+    desc: 'Full coverage for blocks A through S with local DPT specialists.',
+    icon: <Building size={24} />,
+    color: 'bg-emerald-50',
+    img: '/area-premium-2.png'
+  },
+  "Bahria Town": {
+    title: 'Bahria Town',
+    slug: 'bahria-town-lahore',
+    desc: 'Premium home-visit services for all sectors (A through F).',
+    icon: <Map size={24} />,
+    color: 'bg-rose-50',
+    img: '/area-bahria.png'
+  },
+  "Valencia": {
+    title: 'Valencia',
+    slug: 'valencia-lahore',
+    desc: 'Comprehensive home physical therapy care for all blocks and sectors.',
+    icon: <Trees size={24} />,
+    color: 'bg-cyan-50',
+    img: '/area-premium-2.png'
+  },
+  "Wapda Town": {
+    title: 'Wapda Town',
+    slug: 'wapda-town-lahore',
+    desc: 'Dedicated therapists available for all extensions and blocks.',
+    icon: <Zap size={24} />,
+    color: 'bg-yellow-50',
+    img: '/area-modern.png'
+  },
+  "Faisal Town": {
+    title: 'Faisal Town',
+    slug: 'faisal-town-lahore',
+    desc: 'Quick-response rehabilitation for the entire residential community.',
+    icon: <LayoutGrid size={24} />,
+    color: 'bg-pink-50',
+    img: '/area-premium-2.png'
+  },
+  "Iqbal Town": {
+    title: 'Iqbal Town',
+    slug: 'iqbal-town-lahore',
+    desc: 'All residential blocks covered by our mobile Doctor of Physical Therapy team.',
+    icon: <Star size={24} />,
+    color: 'bg-indigo-50',
+    img: '/area-modern.png'
+  }
+};
 
 const areasHubSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Home Physiotherapy Service Areas in Lahore",
   "url": "https://www.universalphysio.fit/areas-we-cover",
-  "itemListElement": [
-    {
+  "itemListElement": SERVICE_AREAS.map((areaName, index) => {
+    const meta = AREA_METADATA[areaName];
+    return {
       "@type": "ListItem",
-      "position": 1,
-      "name": "DHA Lahore Home Physiotherapy",
-      "url": "https://www.universalphysio.fit/areas-we-cover/dha-lahore"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Gulberg Lahore Home Physiotherapy",
-      "url": "https://www.universalphysio.fit/areas-we-cover/gulberg-lahore"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Johar Town Lahore Home Physiotherapy",
-      "url": "https://www.universalphysio.fit/areas-we-cover/johar-town-lahore"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "Model Town Lahore Home Physiotherapy",
-      "url": "https://www.universalphysio.fit/areas-we-cover/model-town-lahore"
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "name": "Bahria Town Lahore Home Physiotherapy",
-      "url": "https://www.universalphysio.fit/areas-we-cover/bahria-town-lahore"
-    },
-    {
-      "@type": "ListItem",
-      "position": 6,
-      "name": "Valencia Lahore Home Physiotherapy",
-      "url": "https://www.universalphysio.fit/areas-we-cover/valencia-lahore"
-    },
-    {
-      "@type": "ListItem",
-      "position": 7,
-      "name": "Wapda Town Lahore Home Physiotherapy",
-      "url": "https://www.universalphysio.fit/areas-we-cover/wapda-town-lahore"
-    },
-    {
-      "@type": "ListItem",
-      "position": 8,
-      "name": "Faisal Town Lahore Home Physiotherapy",
-      "url": "https://www.universalphysio.fit/areas-we-cover/faisal-town-lahore"
-    },
-    {
-      "@type": "ListItem",
-      "position": 9,
-      "name": "Iqbal Town Lahore Home Physiotherapy",
-      "url": "https://www.universalphysio.fit/areas-we-cover/iqbal-town-lahore"
-    }
-  ]
+      "position": index + 1,
+      "name": `${meta.title} Home Physiotherapy`,
+      "url": `https://www.universalphysio.fit/areas-we-cover/${meta.slug}`
+    };
+  })
 };
 
 const AreasWeCover = () => {
-  const areas = [
-    { title: 'DHA Lahore', slug: 'dha-lahore', desc: 'All phases (1-13) covered with immediate Doctor of Physical Therapy availability.', icon: <Building2 size={24} />, color: 'bg-blue-50', img: '/area-premium-1.png' },
-    { title: 'Gulberg Lahore', slug: 'gulberg-lahore', desc: 'Full coverage for Gulberg I, II, III & Main Boulevard residences.', icon: <Building size={24} />, color: 'bg-purple-50', img: '/area-premium-2.png' },
-    { title: 'Johar Town', slug: 'johar-town-lahore', desc: 'Fast response home visits for Phase 1, Phase 2, and doctors hospital vicinity.', icon: <Home size={24} />, color: 'bg-orange-50', img: '/area-modern.png' },
-    { title: 'Model Town', slug: 'model-town-lahore', desc: 'Full coverage for blocks A through S with local DPT specialists.', icon: <Building size={24} />, color: 'bg-emerald-50', img: '/area-premium-2.png' },
-    { title: 'Bahria Town', slug: 'bahria-town-lahore', desc: 'Premium home-visit services for all sectors (A through F).', icon: <Map size={24} />, color: 'bg-rose-50', img: '/area-bahria.png' },
-    { title: 'Valencia', slug: 'valencia-lahore', desc: 'Comprehensive home physical therapy care for all blocks and sectors.', icon: <Trees size={24} />, color: 'bg-cyan-50', img: '/area-premium-2.png' },
-    { title: 'Wapda Town', slug: 'wapda-town-lahore', desc: 'Dedicated therapists available for all extensions and blocks.', icon: <Zap size={24} />, color: 'bg-yellow-50', img: '/area-modern.png' },
-    { title: 'Faisal Town', slug: 'faisal-town-lahore', desc: 'Quick-response rehabilitation for the entire residential community.', icon: <LayoutGrid size={24} />, color: 'bg-pink-50', img: '/area-premium-2.png' },
-    { title: 'Iqbal Town', slug: 'iqbal-town-lahore', desc: 'All residential blocks covered by our mobile Doctor of Physical Therapy team.', icon: <Star size={24} />, color: 'bg-indigo-50', img: '/area-modern.png' },
-  ];
+  const areas = SERVICE_AREAS.map((areaName) => ({
+    name: areaName,
+    ...AREA_METADATA[areaName]
+  }));
 
   return (
     <div className="w-full bg-[#FEFEFA] overflow-hidden">
@@ -213,11 +234,11 @@ const AreasWeCover = () => {
                         View Area Guide <ArrowRight size={14} />
                       </Link>
                     ) : (
-                      <Link to="/booking" state={{ selectedArea: area.title }} className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-1.5 hover:underline">
+                      <Link to="/booking" state={{ selectedArea: area.name }} className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-1.5 hover:underline">
                         Book Visit <ArrowRight size={14} />
                       </Link>
                     )}
-                    <Link to="/booking" state={{ selectedArea: area.title }} className="px-3 py-1.5 bg-primary/10 text-primary rounded-xl text-xs font-bold hover:bg-primary hover:text-white transition-colors">
+                    <Link to="/booking" state={{ selectedArea: area.name }} className="px-3 py-1.5 bg-primary/10 text-primary rounded-xl text-xs font-bold hover:bg-primary hover:text-white transition-colors">
                       Book Session
                     </Link>
                   </div>

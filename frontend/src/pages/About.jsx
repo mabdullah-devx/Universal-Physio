@@ -1,4 +1,5 @@
 import SEO from '../components/SEO';
+import { PATIENTS_TREATED_LABEL } from '../config/site';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -28,7 +29,7 @@ const About = () => {
   };
 
   const metrics = [
-    { value: "1,500+", label: "Patients Treated at Home" },
+    { value: PATIENTS_TREATED_LABEL.split(' ')[0], label: PATIENTS_TREATED_LABEL.slice(PATIENTS_TREATED_LABEL.indexOf(' ') + 1) },
     { value: "98%", label: "Clinical Satisfaction Rate" },
     { value: "15+", label: "Certified DPT Doctors" },
     { value: "100%", label: "Lahore Area Coverage" },

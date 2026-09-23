@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Activity, CheckCircle2, HelpCircle } from 'lucide-react';
 import SEO from '../../components/SEO';

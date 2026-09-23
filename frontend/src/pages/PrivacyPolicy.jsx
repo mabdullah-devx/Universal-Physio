@@ -1,5 +1,4 @@
 import SEO from '../components/SEO';
-import React from 'react';
 import { Shield, Lock, Eye, FileText, Globe, Bell, Mail, Phone, MapPin, UserCheck, Trash2, Edit } from 'lucide-react';
 
 const PrivacyPolicy = () => {

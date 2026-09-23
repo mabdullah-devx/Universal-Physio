@@ -1,31 +1,33 @@
 import SEO from '../components/SEO';
-import React, { useState, useEffect } from 'react';
+import { SERVICE_AREAS } from '../config/site';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { User, Phone, CheckCircle2, Loader2, MapPin, Mail, HeartPulse } from 'lucide-react';
 
 const Booking = () => {
   const location = useLocation();
-  const [formData, setFormData] = useState({
+
+  const getInitialArea = (state) => {
+    let areaVal = state?.selectedArea || '';
+    if (areaVal === 'DHA Lahore') return 'DHA';
+    if (areaVal === 'Gulberg Lahore') return 'Gulberg';
+    return areaVal;
+  };
+
+  const [formData, setFormData] = useState(() => ({
     name: '',
     phone: '',
     email: '',
     service: '',
-    area: '',
+    area: getInitialArea(location.state),
     address: '',
     date: '',
     time: ''
-  });
+  }));
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [status, setStatus] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
-
-  // Pre-select area if coming from Areas We Cover page
-  useEffect(() => {
-    if (location.state?.selectedArea) {
-      setFormData(prev => ({ ...prev, area: location.state.selectedArea }));
-    }
-  }, [location.state]);
 
   const validateField = (name, value) => {
     let error = '';
@@ -329,15 +331,10 @@ const Booking = () => {
                         className={`w-full px-6 py-4 rounded-2xl border bg-[#F8F9FA] focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none ${touched.area && errors.area ? 'border-red-500' : 'border-border focus:border-primary'}`}
                       >
                         <option value="" disabled>Select your area...</option>
-                        <option value="DHA Lahore">DHA Lahore</option>
-                        <option value="Valencia">Valencia</option>
-                        <option value="Johar Town">Johar Town</option>
-                        <option value="Model Town">Model Town</option>
-                        <option value="Wapda Town">Wapda Town</option>
-                        <option value="LDA & EME">LDA & EME</option>
-                        <option value="Faisal Town">Faisal Town</option>
-                        <option value="Iqbal Town">Iqbal Town</option>
-                        <option value="Bahria Town">Bahria Town</option>
+                        {SERVICE_AREAS.map(area => (
+                          <option key={area} value={area}>{area}</option>
+                        ))}
+                        <option value="Other / Outside these areas">Other / Outside these areas</option>
                       </select>
                       {touched.area && errors.area && <p className="text-[10px] text-red-500 font-bold ml-4">{errors.area}</p>}
                     </div>

@@ -45,7 +45,7 @@ function generateRouteNoscriptHtml(route) {
     <h2>Our Clinical Mission &amp; Core Values</h2>
     <p>We are dedicated to restoring physical independence, eliminating pain, and empowering patients with sustainable movement habits. All therapeutic interventions strictly follow international physical therapy protocols and peer-reviewed clinical science.</p>
     <ul>
-      <li><strong>1,500+ Patients Treated:</strong> Proven track record of successful home rehabilitations across all Lahore residential sectors.</li>
+      <li><strong>500+ Patients Treated:</strong> Proven track record of successful home rehabilitations across all Lahore residential sectors.</li>
       <li><strong>98% Patient Satisfaction:</strong> High clinical outcomes backed by patient trust and family recommendations.</li>
       <li><strong>100% Home Coverage in Lahore:</strong> Direct service to DHA, Gulberg, Johar Town, Model Town, Bahria Town, Valencia, Wapda Town, Faisal Town, and Iqbal Town.</li>
     </ul>
@@ -157,6 +157,8 @@ function cleanHeadTags(html, r) {
   const title = escapeHtmlAttr(r.title);
   const description = escapeHtmlAttr(r.description);
   const canonical = escapeHtmlAttr(r.canonical);
+  const image = escapeHtmlAttr(r.image || 'https://www.universalphysio.fit/hero-bg.png');
+  const type = escapeHtmlAttr(r.type || 'website');
 
   html = html.replace(/<title>.*?<\/title>/gi, '');
   html = html.replace('</head>', `  <title>${escapeHtml(r.title)}</title>\n</head>`);
@@ -164,18 +166,26 @@ function cleanHeadTags(html, r) {
   html = html.replace(/<meta name="description"[^>]*>/gi, '');
   html = html.replace('</head>', `  <meta name="description" content="${description}">\n</head>`);
 
+  html = html.replace(/<meta name="keywords"[^>]*>/gi, '');
+
   html = html.replace(/<link rel="canonical"[^>]*>/gi, '');
   html = html.replace('</head>', `  <link rel="canonical" href="${canonical}">\n</head>`);
 
-  // Keep the social tags consistent with the canonical, otherwise every
-  // prerendered page inherits the homepage's og:url/title/description.
-  html = html.replace(/<meta property="og:(?:title|description|url)"[^>]*>/gi, '');
-  html = html.replace(/<meta name="twitter:(?:title|description)"[^>]*>/gi, '');
-  html = html.replace('</head>', `  <meta property="og:title" content="${title}">
+  // Strip any existing OG and Twitter tags to prevent duplicates
+  html = html.replace(/<meta property="og:[^"]*"[^>]*>/gi, '');
+  html = html.replace(/<meta name="twitter:[^"]*"[^>]*>/gi, '');
+
+  // Emit clean, single set of OG and Twitter tags
+  html = html.replace('</head>', `  <meta property="og:type" content="${type}">
+  <meta property="og:title" content="${title}">
   <meta property="og:description" content="${description}">
   <meta property="og:url" content="${canonical}">
+  <meta property="og:image" content="${image}">
+  <meta property="og:site_name" content="Universal Physio Care">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${title}">
   <meta name="twitter:description" content="${description}">
+  <meta name="twitter:image" content="${image}">
 </head>`);
 
   return html;
@@ -183,29 +193,29 @@ function cleanHeadTags(html, r) {
 
 function getRoutesToPrerender() {
   return [
-    { path: '/', title: 'Physiotherapy in Lahore | Doctor of Physical Therapy Home Visits', description: 'Restore mobility fast with certified Doctor of Physical Therapy home visits across Lahore. Relief for stroke, spine & joint pain. Book your session now.', canonical: 'https://www.universalphysio.fit/' },
-    { path: '/services', title: 'Physiotherapy Services in Lahore | In-Home Rehabilitation', description: 'Explore specialized in-home physiotherapy services in Lahore: back & neck pain relief, stroke rehabilitation, sports recovery & elderly care. Book today.', canonical: 'https://www.universalphysio.fit/services' },
-    { path: '/services/back-and-neck-pain-physiotherapy', title: 'Back Pain Physiotherapy in Lahore | In-Home Care', description: 'Relieve spinal stiffness and sciatica fast. Certified DPT doctors provide targeted back pain physiotherapy at home in Lahore. Book online today.', canonical: 'https://www.universalphysio.fit/services/back-and-neck-pain-physiotherapy' },
-    { path: '/services/stroke-rehabilitation-physiotherapy', title: 'Stroke Rehabilitation Physiotherapy in Lahore | In-Home', description: 'Rebuild motor function and walking ability with specialized stroke neuro-physiotherapy at home in Lahore. Certified DPT care. Book your visit today.', canonical: 'https://www.universalphysio.fit/services/stroke-rehabilitation-physiotherapy' },
-    { path: '/services/sports-injury-physiotherapy', title: 'Sports Injury Physiotherapy in Lahore | In-Home Rehab', description: 'Targeted home sports injury physiotherapy in Lahore for sprains, muscle strains, ACL recovery & joint rehab. Book a certified DPT specialist today.', canonical: 'https://www.universalphysio.fit/services/sports-injury-physiotherapy' },
-    { path: '/services/post-surgery-rehabilitation-physiotherapy', title: 'Post-Surgery Rehabilitation in Lahore | In-Home Care', description: 'In-home post-surgery physiotherapy in Lahore for ACL repairs, joint replacements, and spinal surgery recovery. Safe mobility. Schedule your visit today.', canonical: 'https://www.universalphysio.fit/services/post-surgery-rehabilitation-physiotherapy' },
-    { path: '/services/elderly-care-physiotherapy', title: 'Elderly Care Physiotherapy in Lahore | Senior Mobility', description: 'Gentle home physical therapy in Lahore for seniors. Fall prevention, arthritis management, and balance enhancement by certified DPTs. Book online today.', canonical: 'https://www.universalphysio.fit/services/elderly-care-physiotherapy' },
+    { path: '/', title: 'Physiotherapy in Lahore | Doctor of Physical Therapy Home Visits | Universal Physio Care', description: 'Restore mobility fast with certified Doctor of Physical Therapy home visits across Lahore. Relief for stroke, spine & joint pain. Book your session now.', canonical: 'https://www.universalphysio.fit/' },
+    { path: '/services', title: 'Physiotherapy Services in Lahore | In-Home Rehabilitation | Universal Physio Care', description: 'Explore specialized in-home physiotherapy services in Lahore: back & neck pain relief, stroke rehabilitation, sports recovery & elderly care. Book today.', canonical: 'https://www.universalphysio.fit/services' },
+    { path: '/services/back-and-neck-pain-physiotherapy', title: 'Back Pain Physiotherapy in Lahore | In-Home Care | Universal Physio Care', description: 'Relieve spinal stiffness and sciatica fast. Certified DPT doctors provide targeted back pain physiotherapy at home in Lahore. Book online today.', canonical: 'https://www.universalphysio.fit/services/back-and-neck-pain-physiotherapy' },
+    { path: '/services/stroke-rehabilitation-physiotherapy', title: 'Stroke Rehabilitation Physiotherapy in Lahore | In-Home | Universal Physio Care', description: 'Rebuild motor function and walking ability with specialized stroke neuro-physiotherapy at home in Lahore. Certified DPT care. Book your visit today.', canonical: 'https://www.universalphysio.fit/services/stroke-rehabilitation-physiotherapy' },
+    { path: '/services/sports-injury-physiotherapy', title: 'Sports Injury Physiotherapy in Lahore | In-Home Rehab | Universal Physio Care', description: 'Targeted home sports injury physiotherapy in Lahore for sprains, muscle strains, ACL recovery & joint rehab. Book a certified DPT specialist today.', canonical: 'https://www.universalphysio.fit/services/sports-injury-physiotherapy' },
+    { path: '/services/post-surgery-rehabilitation-physiotherapy', title: 'Post-Surgery Rehabilitation in Lahore | In-Home Care | Universal Physio Care', description: 'In-home post-surgery physiotherapy in Lahore for ACL repairs, joint replacements, and spinal surgery recovery. Safe mobility. Schedule your visit today.', canonical: 'https://www.universalphysio.fit/services/post-surgery-rehabilitation-physiotherapy' },
+    { path: '/services/elderly-care-physiotherapy', title: 'Elderly Care Physiotherapy in Lahore | Senior Mobility | Universal Physio Care', description: 'Gentle home physical therapy in Lahore for seniors. Fall prevention, arthritis management, and balance enhancement by certified DPTs. Book online today.', canonical: 'https://www.universalphysio.fit/services/elderly-care-physiotherapy' },
     { path: '/about', title: 'About Universal Physio Care | DPT Specialists in Lahore', description: 'Meet Lahore\'s trusted Doctor of Physical Therapy team. Certified DPT specialists delivering evidence-based in-home physiotherapy. Learn about our care.', canonical: 'https://www.universalphysio.fit/about' },
     { path: '/contact', title: 'Contact Universal Physio Care | Home Visits in Lahore', description: 'Contact Universal Physio Care in Lahore. Schedule your Doctor of Physical Therapy home visit, call +92 306 4954970 or message us on WhatsApp today.', canonical: 'https://www.universalphysio.fit/contact' },
     { path: '/booking', title: 'Book Physiotherapist Home Visit in Lahore | Universal Physio', description: 'Schedule your certified Doctor of Physical Therapy home visit in Lahore in under 60 seconds. Flexible morning & evening slots. Reserve your session now.', canonical: 'https://www.universalphysio.fit/booking' },
-    { path: '/areas-we-cover', title: 'Physiotherapy Service Areas in Lahore | In-Home Coverage', description: 'Discover Doctor of Physical Therapy home visit coverage across Lahore: DHA, Gulberg, Johar Town, Model Town & Bahria Town. Book your session today.', canonical: 'https://www.universalphysio.fit/areas-we-cover' },
-    { path: '/areas-we-cover/dha-lahore', title: 'Home Physiotherapy in DHA Lahore | Universal Physio Care', description: 'Book Doctor of Physical Therapy (DPT) home visits in DHA Lahore (Phases 1-13). Expert spine, neuro, post-surgery & geriatric care at your doorstep.', canonical: 'https://www.universalphysio.fit/areas-we-cover/dha-lahore' },
-    { path: '/areas-we-cover/gulberg-lahore', title: 'Home Physiotherapy in Gulberg Lahore | Universal Physio Care', description: 'Professional home visit physical therapy in Gulberg Lahore (Blocks 1-3 & Main Boulevard). Certified DPT specialists for back pain & stroke rehab.', canonical: 'https://www.universalphysio.fit/areas-we-cover/gulberg-lahore' },
-    { path: '/areas-we-cover/johar-town-lahore', title: 'Home Physiotherapy in Johar Town Lahore | Universal Physio Care', description: 'Certified Doctor of Physical Therapy home visit sessions in Johar Town Lahore (Phase 1 & Phase 2). Professional spine, joint & neuro rehab.', canonical: 'https://www.universalphysio.fit/areas-we-cover/johar-town-lahore' },
-    { path: '/areas-we-cover/model-town-lahore', title: 'Home Physiotherapy in Model Town Lahore | Universal Physio Care', description: 'In-home Doctor of Physical Therapy visits across Model Town Lahore (Blocks A-S). Specialized treatment for back pain, knee rehab & senior mobility.', canonical: 'https://www.universalphysio.fit/areas-we-cover/model-town-lahore' },
-    { path: '/areas-we-cover/bahria-town-lahore', title: 'Home Physiotherapy in Bahria Town Lahore | Universal Physio Care', description: 'Certified home visit physical therapy in Bahria Town Lahore (Sectors A-F). Hospital-grade rehabilitation delivered to your residence.', canonical: 'https://www.universalphysio.fit/areas-we-cover/bahria-town-lahore' },
-    { path: '/areas-we-cover/valencia-lahore', title: 'Home Physiotherapy in Valencia Lahore | Universal Physio Care', description: 'Home physical therapy visits in Valencia Town Lahore. Specialized DPT care for joint pain, stroke recovery & post-operative rehabilitation.', canonical: 'https://www.universalphysio.fit/areas-we-cover/valencia-lahore' },
-    { path: '/areas-we-cover/wapda-town-lahore', title: 'Home Physiotherapy in Wapda Town Lahore | Universal Physio Care', description: 'Doctor of Physical Therapy (DPT) home visit services in Wapda Town Lahore across Phase 1, Phase 2, and all residential blocks.', canonical: 'https://www.universalphysio.fit/areas-we-cover/wapda-town-lahore' },
-    { path: '/areas-we-cover/faisal-town-lahore', title: 'Home Physiotherapy in Faisal Town Lahore | Universal Physio Care', description: 'In-home Doctor of Physical Therapy visits delivered to your residence in Faisal Town Lahore across Blocks A, B, C & FAST University vicinity.', canonical: 'https://www.universalphysio.fit/areas-we-cover/faisal-town-lahore' },
-    { path: '/areas-we-cover/iqbal-town-lahore', title: 'Home Physiotherapy in Iqbal Town Lahore | Universal Physio Care', description: 'Professional home visit physical therapy in Allama Iqbal Town Lahore across Khyaban-e-Iqbal, Chenab, Moon Market & surrounding blocks.', canonical: 'https://www.universalphysio.fit/areas-we-cover/iqbal-town-lahore' },
-    { path: '/blog', title: 'Physiotherapy & Health Recovery Blog | Universal Physio Care', description: 'Evidence-based physical therapy insights, spine health advice, stroke recovery exercises, and wellness guides from certified DPT specialists in Lahore.', canonical: 'https://www.universalphysio.fit/blog' },
-    { path: '/privacy-policy', title: 'Privacy Policy | Universal Physio Care', description: 'Privacy Policy and patient data protection guidelines for Universal Physio Care in Lahore.', canonical: 'https://www.universalphysio.fit/privacy-policy' },
-    { path: '/terms-of-service', title: 'Terms of Service | Universal Physio Care', description: 'Terms of Service and treatment agreement guidelines for Universal Physio Care home visits in Lahore.', canonical: 'https://www.universalphysio.fit/terms-of-service' }
+    { path: '/areas-we-cover', title: 'Physiotherapy Service Areas in Lahore | In-Home Coverage | Universal Physio Care', description: 'Discover Doctor of Physical Therapy home visit coverage across Lahore: DHA, Gulberg, Johar Town, Model Town & Bahria Town. Book your session today.', canonical: 'https://www.universalphysio.fit/areas-we-cover' },
+    { path: '/areas-we-cover/dha-lahore', title: 'Home Physiotherapy in DHA Lahore | Universal Physio', description: 'Book Doctor of Physical Therapy (DPT) home visits in DHA Lahore (Phases 1-9). Specialized spine, neuro, post-surgery & geriatric care at your doorstep.', canonical: 'https://www.universalphysio.fit/areas-we-cover/dha-lahore' },
+    { path: '/areas-we-cover/gulberg-lahore', title: 'Home Physiotherapy in Gulberg Lahore | Universal Physio', description: 'Professional home visit physical therapy in Gulberg Lahore (Blocks 1-3 & Main Boulevard). DPT specialists for back pain & stroke rehab.', canonical: 'https://www.universalphysio.fit/areas-we-cover/gulberg-lahore' },
+    { path: '/areas-we-cover/johar-town-lahore', title: 'Home Physiotherapy in Johar Town Lahore | Universal Physio', description: 'Certified Doctor of Physical Therapy home visit sessions in Johar Town Lahore (Phase 1 & Phase 2). Professional spine, joint & neuro rehab.', canonical: 'https://www.universalphysio.fit/areas-we-cover/johar-town-lahore' },
+    { path: '/areas-we-cover/model-town-lahore', title: 'Home Physiotherapy in Model Town Lahore | Universal Physio', description: 'In-home Doctor of Physical Therapy visits across Model Town Lahore (Blocks A-S). Specialized treatment for back pain, knee rehab & senior mobility.', canonical: 'https://www.universalphysio.fit/areas-we-cover/model-town-lahore' },
+    { path: '/areas-we-cover/bahria-town-lahore', title: 'Home Physiotherapy in Bahria Town Lahore | Universal Physio', description: 'Home visit physical therapy in Bahria Town Lahore (Sectors A-F). Professional rehabilitation delivered to your residence.', canonical: 'https://www.universalphysio.fit/areas-we-cover/bahria-town-lahore' },
+    { path: '/areas-we-cover/valencia-lahore', title: 'Home Physiotherapy in Valencia Lahore | Universal Physio', description: 'Home physical therapy visits in Valencia Town Lahore. Specialized DPT care for joint pain, stroke recovery & post-operative rehabilitation.', canonical: 'https://www.universalphysio.fit/areas-we-cover/valencia-lahore' },
+    { path: '/areas-we-cover/wapda-town-lahore', title: 'Home Physiotherapy in Wapda Town Lahore | Universal Physio', description: 'Doctor of Physical Therapy (DPT) home visit services in Wapda Town Lahore across Phase 1, Phase 2, and all residential blocks.', canonical: 'https://www.universalphysio.fit/areas-we-cover/wapda-town-lahore' },
+    { path: '/areas-we-cover/faisal-town-lahore', title: 'Home Physiotherapy in Faisal Town Lahore | Universal Physio', description: 'In-home Doctor of Physical Therapy visits delivered to your residence in Faisal Town Lahore across Blocks A, B, C & FAST University vicinity.', canonical: 'https://www.universalphysio.fit/areas-we-cover/faisal-town-lahore' },
+    { path: '/areas-we-cover/iqbal-town-lahore', title: 'Home Physiotherapy in Iqbal Town Lahore | Universal Physio', description: 'Professional home visit physical therapy in Allama Iqbal Town Lahore across Khyaban-e-Iqbal, Chenab, Moon Market & surrounding blocks.', canonical: 'https://www.universalphysio.fit/areas-we-cover/iqbal-town-lahore' },
+    { path: '/blog', title: 'Physiotherapy & Health Recovery Blog | Universal Physio', description: 'Evidence-based physical therapy insights, spine health advice, stroke recovery exercises, and wellness guides from certified DPT specialists in Lahore.', canonical: 'https://www.universalphysio.fit/blog' },
+    { path: '/privacy-policy', title: 'Privacy Policy | Universal Physio', description: 'Privacy Policy and patient data protection guidelines for Universal Physio Care in Lahore.', canonical: 'https://www.universalphysio.fit/privacy-policy' },
+    { path: '/terms-of-service', title: 'Terms of Service | Universal Physio', description: 'Terms of Service and treatment agreement guidelines for Universal Physio Care home visits in Lahore.', canonical: 'https://www.universalphysio.fit/terms-of-service' }
   ];
 }
 
@@ -234,6 +244,8 @@ async function getBlogRoutesToPrerender() {
         title: `${b.title} | Universal Physio Blog`,
         description: b.excerpt || 'Evidence-based physiotherapy insights from certified Doctor of Physical Therapy specialists in Lahore.',
         canonical: `${SITE_ORIGIN}/blog/${b.slug}`,
+        image: b.image_url || 'https://www.universalphysio.fit/hero-bg.png',
+        type: 'article',
         blog: b
       }));
   } catch (err) {

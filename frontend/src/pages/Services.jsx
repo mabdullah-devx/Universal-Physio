@@ -1,5 +1,5 @@
 import SEO from '../components/SEO';
-import React, { useEffect } from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 

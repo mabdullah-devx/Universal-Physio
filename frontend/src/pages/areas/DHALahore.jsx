@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, CheckCircle2, Clock, ShieldCheck, HeartPulse, HelpCircle } from 'lucide-react';
 import SEO from '../../components/SEO';
@@ -144,7 +143,7 @@ const DHALahore = () => {
             Select your preferred date, time, and service to schedule your appointment.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-2">
-            <Link to="/booking" state={{ selectedArea: "DHA Lahore" }} className="px-8 py-4 bg-white text-[#2C3E2D] font-bold rounded-2xl hover:bg-gray-100 transition-all">
+            <Link to="/booking" state={{ selectedArea: "DHA" }} className="px-8 py-4 bg-white text-[#2C3E2D] font-bold rounded-2xl hover:bg-gray-100 transition-all">
               Book Visit in DHA Lahore
             </Link>
             <Link to="/areas-we-cover" className="px-8 py-4 bg-white/10 text-white font-bold rounded-2xl border border-white/20 hover:bg-white/20 transition-all">

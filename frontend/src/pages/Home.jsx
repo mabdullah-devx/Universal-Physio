@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HeartPulse, CheckCircle2, Star, ArrowRight, UserCheck, CalendarCheck, Home as HomeIcon, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import SEO from '../components/SEO';
+import { PATIENTS_TREATED_LABEL } from '../config/site';
 
 const faqs = [
   { q: 'What is physiotherapy and how can it help me?', a: 'Physiotherapy is a healthcare profession that uses evidence-based physical techniques—such as exercise, manual therapy, and electrotherapy—to treat injuries, manage pain, and restore movement. It helps with conditions ranging from back pain to post-surgical recovery.' },
@@ -97,7 +98,7 @@ const Home = () => {
   return (
     <div className="w-full">
       <SEO 
-        title="Physiotherapy in Lahore | Doctor of Physical Therapy Home Visits" 
+        title="Physiotherapy in Lahore | Doctor of Physical Therapy Home Visits | Universal Physio Care" 
         description="Restore mobility fast with certified Doctor of Physical Therapy home visits across Lahore. Relief for stroke, spine & joint pain. Book your session now."
         path="/"
         schema={homeSchemas}
@@ -137,8 +138,8 @@ const Home = () => {
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-50 animate-slide-up opacity-0 [animation-fill-mode:forwards] animation-delay-300">
               <div>
-                <p className="text-2xl font-bold text-[#2D4A22]">500+</p>
-                <p className="text-xs text-gray-400 font-medium">Patients Treated</p>
+                <p className="text-2xl font-bold text-[#2D4A22]">{PATIENTS_TREATED_LABEL.split(' ')[0]}</p>
+                <p className="text-xs text-gray-400 font-medium">{PATIENTS_TREATED_LABEL.slice(PATIENTS_TREATED_LABEL.indexOf(' ') + 1)}</p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-[#2D4A22]">15+</p>
